@@ -22,32 +22,6 @@
                     </div>
                     <div class="card-body">
 
-                        {{-- <div class="row mb-3">
-                            <div class="col-md-3">
-                                <label class="form-label">From Date</label>
-                                <input type="date"
-                                    id="from_date"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3">
-                                <label class="form-label">To Date</label>
-                                <input type="date"
-                                    id="to_date"
-                                    class="form-control">
-                            </div>
-
-                            <div class="col-md-3 d-flex align-items-end">
-                                <button class="btn btn-primary me-2"
-                                    id="filter">
-                                    Filter
-                                </button>
-                                <button class="btn btn-secondary"
-                                    id="reset">
-                                    Reset
-                                </button>
-                            </div>
-                        </div> --}}
                         <div class="table-responsive-sm">
                             <table class="table table-bordered mb-0"
                                 id="usersTable">
@@ -64,47 +38,6 @@
                                 </thead>
                             </table>
                         </div>
-
-
-                        <div class="card">
-                            <div class="card-header border-bottom border-dashed d-flex align-items-center">
-                                <h4 class="header-title">Bordered Table</h4>
-                            </div>
-                            <div class="card-body">
-                                {{-- <p class="text-muted">
-                                    Add <code>.table-bordered</code> for borders on all sides of the table and cells.
-                                </p> --}}
-                                <div class="table-responsive-sm">
-                                    <table class="table table-bordered mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>User</th>
-                                                <th>Account No.</th>
-                                                <th>Balance</th>
-                                                <th class="text-center">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <img src="assets/images/users/avatar-6.jpg"
-                                                        alt="table-user"
-                                                        class="avatar-sm me-2 rounded-circle">
-                                                    Risa D. Pearson
-                                                </td>
-                                                <td>AC336 508 2157</td>
-                                                <td>July 24, 1950</td>
-                                                <td class="text-center text-muted">
-                                                    <a href="javascript: void(0);"
-                                                        class="link-reset fs-20 p-1"> <i class="ti ti-trash"></i></a>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div> <!-- end table-responsive-->
-                            </div> <!-- end card body-->
-                        </div>
-
                     </div>
                 </div>
             </div>

@@ -28,73 +28,76 @@
     href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"> -->
 <link rel="stylesheet"
     href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
-
 <style>
-    /* ===== TOP SECTION FIX ===== */
-    .dataTables_wrapper .row:first-child {
-        display: flex;
+    /* ===== DT LAYOUT ROW (BOTTOM) ===== */
+    .dt-layout-row {
+        display: flex !important;
         justify-content: space-between;
         align-items: center;
         background: #fff;
-        /* remove grey */
-        padding: 12px 16px;
-        border-radius: 10px;
-        margin-bottom: 15px;
-        border: 1px solid #eee;
+        margin: 10px 0px;
     }
 
-    /* Remove bootstrap column weird stacking */
-    .dataTables_wrapper .row:first-child>div {
-        width: auto !important;
-        padding: 0 !important;
-    }
-
-    /* Length (left) */
-    .dataTables_length {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    /* Search (right) */
-    .dataTables_filter {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    /* Search input fix */
-    .dataTables_filter input {
-        width: 200px;
-    }
-
-
-    /* ===== BOTTOM SECTION FIX ===== */
-    .dataTables_wrapper .row:last-child {
-        display: flex;
+    .dt-layout-row.dt-layout-table {
+        display: unset !important;
         justify-content: space-between;
         align-items: center;
         background: #fff;
-        padding: 12px 16px;
-        border-radius: 10px;
-        margin-top: 15px;
-        border: 1px solid #eee;
     }
 
-    /* Remove bootstrap column issues */
-    .dataTables_wrapper .row:last-child>div {
-        width: auto !important;
-        padding: 0 !important;
+    /* Left side (info text) */
+    .dt-layout-start {
+        display: flex;
+        align-items: center;
     }
 
-    /* Info text (left) */
-    .dataTables_info {
+    .dt-info {
         font-size: 13px;
+        color: #6c757d;
     }
 
-    /* Pagination (right) */
-    .dataTables_paginate {
-        margin: 0;
+    /* Right side (pagination) */
+    .dt-layout-end {
+        display: flex;
+        align-items: center;
+    }
+
+    /* Pagination container */
+    .dt-paging nav {
+        display: flex;
+        gap: 6px;
+    }
+
+    /* Buttons */
+    .dt-paging-button {
+        border: none;
+        padding: 6px 12px;
+        border-radius: 8px;
+        background: #f1f5ff;
+        color: #0d6efd;
+        font-weight: 500;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    /* Hover */
+    .dt-paging-button:hover {
+        background: #0d6efd;
+        color: #fff;
+    }
+
+    /* Active */
+    .dt-paging-button.current {
+        background: #0d6efd;
+        color: #fff;
+        box-shadow: 0 2px 6px rgba(13, 110, 253, 0.3);
+    }
+
+    /* Disabled */
+    .dt-paging-button.disabled {
+        background: #e9ecef;
+        color: #adb5bd;
+        cursor: not-allowed;
     }
 </style>
 
