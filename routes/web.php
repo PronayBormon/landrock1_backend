@@ -4,7 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('backend.layouts.dashboard.index');
+    // return view('backend.layouts.dashboard.index');
+    return redirect()->route('admin.dashboard.index');
 })->middleware(['auth', 'admin']);
 
 // Route::get('/admin/dashboard', function () {
