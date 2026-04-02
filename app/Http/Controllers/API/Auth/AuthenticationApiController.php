@@ -252,6 +252,6 @@ class AuthenticationApiController extends Controller
                 ->subject('Your OTP Code');
         });
 
-        return $this->successResponse('OTP resent successfully');
+        return $this->successResponse('OTP resent successfully', $otp->token);
     }
 }

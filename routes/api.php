@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthenticationApiController;
+use App\Models\SystemSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,4 +18,21 @@ Route::prefix('auth')->controller(AuthenticationApiController::class)->group(fun
     Route::post('forget/verify', 'verifyForgotOtp');
     Route::post('forget/password/update', 'resetPassword');
     Route::post('resend', 'resendOtp');
+});
+
+Route::get('systems', function () {
+    $system = SystemSetting::firstOrCreate(
+        ['id' => 1],
+        [
+            'site_name' => 'My App',
+            'currency' => 'USD',
+            'timezone' => 'UTC'
+        ]
+    );
+
+    return response()->json([
+        'status' => true,
+        'message' => 'system',
+        'data' => $system
+    ]);
 });
