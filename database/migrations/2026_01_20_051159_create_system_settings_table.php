@@ -15,21 +15,21 @@ return new class extends Migration
             $table->id();
 
             // Core Identity
-            $table->string('site_name');
+            $table->string('site_name')->nullable();
             $table->string('site_tagline')->nullable();
             $table->string('logo')->nullable();        // Light Logo
             $table->string('dark_logo')->nullable();   // Dark Logo
             $table->string('favicon')->nullable();
 
             // Contact Info
-            $table->string('contact_email');
+            $table->string('contact_email')->nullable();
             $table->string('support_email')->nullable();
-            $table->string('phone');
+            $table->string('phone')->nullable();
             $table->string('phone_alt')->nullable();
-            $table->text('address');
-            $table->string('city');
+            $table->text('address')->nullable();
+            $table->string('city')->nullable();
             $table->string('state')->nullable();
-            $table->string('country');
+            $table->string('country')->nullable();
             $table->string('postal_code')->nullable();
 
             // Social Links
@@ -43,10 +43,10 @@ return new class extends Migration
             // Branding
             $table->string('primary_color')->nullable();
             $table->string('secondary_color')->nullable();
-            $table->string('currency');
-            $table->string('currency_symbol');
-            $table->string('timezone');
-            $table->string('date_format');
+            $table->string('currency')->nullable();
+            $table->string('currency_symbol')->nullable();
+            $table->string('timezone')->nullable();
+            $table->string('date_format')->nullable();
 
             // System Controls
             $table->boolean('maintenance_mode')->default(false);

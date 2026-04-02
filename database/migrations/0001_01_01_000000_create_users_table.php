@@ -13,10 +13,46 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->text('bio')->nullable();
+            $table->string('avatar')->nullable();
+
+            $table->enum('ride_style', [
+                'chill',
+                'talkative',
+                'quiet',
+                'work_friendly'
+            ])->nullable();
+
+            $table->enum('music_preference', [
+                'rap',
+                'pop',
+                'afro',
+                'rock',
+                'no_music'
+            ])->nullable();
+
+            $table->enum('conversation_level', [
+                'yes',
+                'little',
+                'prefer_quiet'
+            ])->nullable();
+            $table->enum('smoke', [
+                'yes',
+                'no',
+            ])->nullable();
+
+            $table->json('interested')->nullable();
+            $table->json('personalization')->nullable();
+
+            // $table->boolean('smoke')->default(false);
+            $table->string('pet')->nullable();
+            $table->string('connect_like_rider')->nullable();
+            $table->string('what_kind_ride')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
         });
