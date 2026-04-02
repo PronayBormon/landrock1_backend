@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="d-flex card-header justify-content-between align-items-center">
                         <div>
-                            <h4 class="header-title">Total Orders</h4>
+                            <h4 class="header-title">{{ __('dashboard.total_orders') }}</h4>
                         </div>
                         <div class="dropdown">
                             <a href="#"
@@ -21,7 +21,7 @@
                                 aria-expanded="false">
                                 <i class="ri-more-2-fill fs-18"></i>
                             </a>
-                            <div class="dropdown-menu dropdown-menu-end">
+                            {{-- <div class="dropdown-menu dropdown-menu-end">
                                 <!-- item-->
                                 <a href="javascript:void(0);"
                                     class="dropdown-item">Sales Report</a>
@@ -34,7 +34,7 @@
                                 <!-- item-->
                                 <a href="javascript:void(0);"
                                     class="dropdown-item">Action</a>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
@@ -46,7 +46,7 @@
                             </div>
                             <div class="text-end">
                                 <h3 class="fw-semibold">687.3k</h3>
-                                <p class="text-muted mb-0">Since last month</p>
+                                <p class="text-muted mb-0">{{ __('dashboard.since_last_month') }}</p>
                             </div>
                         </div>
                     </div>
@@ -57,7 +57,7 @@
                 <div class="card">
                     <div class="d-flex card-header justify-content-between align-items-center">
                         <div>
-                            <h4 class="header-title">Total Revenue</h4>
+                            <h4 class="header-title">{{ __('dashboard.total_revenue') }}</h4>
                         </div>
                         <div class="dropdown">
                             <a href="#"
@@ -88,7 +88,7 @@
                             <span class="badge bg-success rounded-pill fs-13">32% <i class="ti ti-trending-up"></i> </span>
                             <div class="text-end">
                                 <h3 class="fw-semibold">$5.42M</h3>
-                                <p class="text-muted mb-0">Since last month</p>
+                                <p class="text-muted mb-0">{{ __('dashboard.since_last_month') }}</p>
                             </div>
                         </div>
 
@@ -108,7 +108,7 @@
                 <div class="card">
                     <div class="d-flex card-header justify-content-between align-items-center">
                         <div>
-                            <h4 class="header-title">New Users</h4>
+                            <h4 class="header-title">{{ __('dashboard.new_users') }}</h4>
                         </div>
                         <div class="dropdown">
                             <a href="#"
@@ -142,7 +142,7 @@
                             </div>
                             <div class="text-end">
                                 <h3 class="fw-semibold">45.3k</h3>
-                                <p class="text-muted mb-0">Since last month</p>
+                                <p class="text-muted mb-0">{{ __('dashboard.since_last_month') }}</p>
                             </div>
                         </div>
                     </div>
@@ -153,7 +153,7 @@
                 <div class="card">
                     <div class="d-flex card-header justify-content-between align-items-center">
                         <div>
-                            <h4 class="header-title">Customer Satisfaction</h4>
+                            <h4 class="header-title">{{ __('dashboard.customer_satisfaction') }}</h4>
                         </div>
                         <div class="dropdown">
                             <a href="#"
@@ -185,7 +185,7 @@
                             </span>
                             <div class="text-end">
                                 <h3 class="fw-semibold">94.3%</h3>
-                                <p class="text-muted mb-0">Since last month</p>
+                                <p class="text-muted mb-0">{{ __('dashboard.since_last_month') }}</p>
                             </div>
                         </div>
 
@@ -200,6 +200,8 @@
                     </div>
                 </div>
             </div><!-- end col -->
+
+            {{-- hrere --}}
 
         </div><!-- end row -->
 

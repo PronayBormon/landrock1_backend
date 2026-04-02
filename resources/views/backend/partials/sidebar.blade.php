@@ -131,7 +131,7 @@
                        <a href="{{ route('admin.dashboard.index') }}"
                            class="side-nav-link">
                            <span class="menu-icon"><i class="ti ti-dashboard"></i></span>
-                           <span class="menu-text"> Dashboard </span>
+                           <span class="menu-text"> {{ __('menu.dashboard') }} </span>
                            {{-- <span class="badge bg-danger rounded-pill">9+</span> --}}
                        </a>
                    </li>
@@ -168,27 +168,27 @@
                        <a href="{{ route('admin.users.index') }}"
                            class="side-nav-link">
                            <span class="menu-icon"><i class="ti ti-user-square-rounded"></i></span>
-                           <span class="menu-text"> Users </span>
+                           <span class="menu-text"> {{ __('menu.users') }} </span>
                        </a>
                    </li>
                    <li class="side-nav-item">
                        <a href="{{ route('admin.faq.index') }}"
                            class="side-nav-link">
                            <span class="menu-icon"><i class="ri-question-line"></i></span>
-                           <span class="menu-text"> FAQ's </span>
+                           <span class="menu-text"> {{ __('menu.faq') }} </span>
                        </a>
                    </li>
                    <li class="side-nav-item">
                        <a href="{{ route('admin.pages.index') }}"
                            class="side-nav-link">
                            <span class="menu-icon"><i class="ti ti-file"></i></span>
-                           <span class="menu-text"> Pages </span>
+                           <span class="menu-text"> {{ __('menu.pages') }} </span>
                        </a>
                    </li>
 
 
                    <li class="side-nav-title mt-2">
-                       More
+                       {{ __('menu.more') }}
                    </li>
 
                    <li class="side-nav-item">
@@ -200,7 +200,7 @@
                            <span class="menu-icon">
                                <i class="ri-settings-4-line fs-22"></i>
                            </span>
-                           <span class="menu-text"> Settings </span>
+                           <span class="menu-text"> {{ __('menu.settings') }} </span>
                            <span class="menu-arrow"></span>
                        </a>
                        <div class="collapse"
@@ -209,22 +209,22 @@
                                <li class="side-nav-item">
                                    <a href="{{ route('admin.dashboard.system.settings') }}"
                                        target=""
-                                       class="side-nav-link">System Settings</a>
+                                       class="side-nav-link">{{ __('menu.system_setting') }}</a>
                                </li>
                                <li class="side-nav-item">
                                    <a href="{{ route('admin.credentials.edit', 'smtp') }}"
                                        target=""
-                                       class="side-nav-link">SMTP Settings</a>
+                                       class="side-nav-link">{{ __('menu.smtp_setting') }}</a>
                                </li>
                                <li class="side-nav-item">
                                    <a href="{{ route('admin.credentials.edit', 'stripe') }}"
                                        target=""
-                                       class="side-nav-link">Stripe Settings</a>
+                                       class="side-nav-link">{{ __('menu.stripe_setting') }}</a>
                                </li>
                                <li class="side-nav-item">
                                    <a href="{{ route('admin.credentials.edit', 'paypal') }}"
                                        target=""
-                                       class="side-nav-link">Paypal Settings</a>
+                                       class="side-nav-link">{{ __('menu.paypal_setting') }}</a>
                                </li>
                            </ul>
                        </div>
