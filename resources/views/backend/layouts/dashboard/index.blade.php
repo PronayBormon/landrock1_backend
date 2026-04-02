@@ -201,6 +201,8 @@
                 </div>
             </div><!-- end col -->
 
+            {{-- hrere --}}
+
         </div><!-- end row -->
 
         <div class="row">
