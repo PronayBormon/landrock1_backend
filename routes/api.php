@@ -36,3 +36,12 @@ Route::get('systems', function () {
         'data' => $system
     ]);
 });
+
+
+// version One (V1) APIS 
+
+Route::prefix('v1')->group(function () {
+
+    require base_path('routes/api/v1/trip.php');
+
+});
