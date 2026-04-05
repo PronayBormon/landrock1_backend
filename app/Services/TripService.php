@@ -13,6 +13,7 @@ class TripService
         $this->tripRepo = $tripRepo;
     }
 
+    
     // public function list($perpage)
     // {
     //     return $this->tripRepo->all($perpage);
