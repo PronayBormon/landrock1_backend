@@ -23,7 +23,15 @@ class TripController extends Controller
     public function index(Request $request)
     {
         $perPage = (int) $request->get('per_page', 10);
-        $trips = $this->service->list($perPage);
+
+        $filters = $request->only([
+            'conversation_level',
+            'ride_date',
+            'music_preference',
+            'ride_style',
+        ]);
+
+        $trips = $this->service->list($perPage, $filters);
 
         return $this->successResponse(
             'Trip List',

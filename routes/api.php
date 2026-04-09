@@ -41,7 +41,6 @@ Route::get('systems', function () {
 // version One (V1) APIS 
 
 Route::prefix('v1')->group(function () {
-
     require base_path('routes/api/v1/trip.php');
-
+    require base_path('routes/api/v1/profile.php');
 });

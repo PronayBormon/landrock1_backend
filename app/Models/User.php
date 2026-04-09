@@ -26,6 +26,16 @@ class User extends Authenticatable
         'role',
         'email_verified_at',
         'remember_token',
+        "bio",
+        "ride_style",
+        "music_preference",
+        "conversation_level",
+        "interested",
+        "personalization",
+        "smoke",
+        "pet",
+        "connect_like_rider",
+        "what_kind_ride",
     ];
 
     /**
@@ -48,13 +58,17 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'interested' => 'array',
+            'personalization' => 'array',
         ];
     }
 
-    public function getAvatarAtribute($value)
+    public function getAvatarAttribute($value)
     {
-        if (request()->is('api/*') & !empty($value)) {
+        if (!empty($value)) {
             return asset($value);
         }
+
+        return $value;
     }
 }
