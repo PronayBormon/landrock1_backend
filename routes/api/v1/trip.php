@@ -16,6 +16,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('trips', [TripController::class, 'store']);
     Route::post('trips/{trip}', [TripController::class, 'update']);
     Route::delete('trips/{trip}', [TripController::class, 'destroy']);
+    Route::post('trips/complete/{trip}', [TripController::class, 'completeTrip']);
+    Route::post('trips/calcelled/{trip}', [TripController::class, 'calcelledTrip']);
 
     /**
      * ******************************************************
@@ -24,5 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
      */
     Route::post('trip/booking', [TripBookingController::class, 'requestSeat']);
     Route::get('trips/request/list', [TripBookingController::class, 'tripRequestList']);
+    Route::get('trips/users/list/{id}', [TripBookingController::class, 'tripusersList']);
+    Route::post('trips/request/accept/{id}', [TripBookingController::class, 'tripRequestAccept']);
+    Route::post('trips/request/reject/{id}', [TripBookingController::class, 'tripRequestReject']);
 });
-

@@ -29,6 +29,7 @@ class UserResource extends JsonResource
             'pet' => $this->pet,
             'connect_like_rider' => $this->connect_like_rider,
             'what_kind_ride' => $this->what_kind_ride,
+            'avg_review' => $this->avg_review,
             'created_at' => $this->created_at?->toDateTimeString(),
         ];
         

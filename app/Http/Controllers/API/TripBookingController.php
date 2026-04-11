@@ -37,4 +37,20 @@ class TripBookingController extends Controller
 
         return $this->successResponse('Send request for seat successfully', $booking, 201);
     }
+
+    public function tripRequestAccept($id)
+    {
+
+        $booking = $this->service->triprequest('approved', $id);
+
+        return $this->successResponse('Trip seat request accept successfully', $booking, 200);
+    }
+
+    public function tripRequestReject($id)
+    {
+
+        $booking = $this->service->triprequest('rejected', $id);
+
+        return $this->successResponse('Trip seat request reject successfully', $booking, 200);
+    }
 }

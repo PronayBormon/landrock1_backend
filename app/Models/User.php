@@ -71,4 +71,31 @@ class User extends Authenticatable
 
         return $value;
     }
+
+    // Reviews received
+    public function reviews()
+    {
+        return $this->hasMany(Review::class, 'user_id');
+    }
+
+    // Reviews given
+    public function givenReviews()
+    {
+        return $this->hasMany(Review::class, 'review_by');
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Accessors (Appended Attributes)
+    |--------------------------------------------------------------------------
+    */
+    protected $appends = ['avg_review'];
+
+    public function getAvgReviewAttribute()
+    {
+        return round($this->reviews_avg_star
+            ?? $this->reviews()->avg('star')
+            ?? 0, 1);
+    }
 }

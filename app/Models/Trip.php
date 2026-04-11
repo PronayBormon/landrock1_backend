@@ -18,16 +18,21 @@ class Trip extends Model
         'available_seat',
         'price_per_seat',
         'ride_status',
-        'publisher_id'
+        'total_seat',
+        'publisher_id',
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'publisher_id');
     }
-    
+
     public function publisher()
     {
         return $this->belongsTo(User::class, 'publisher_id');
+    }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

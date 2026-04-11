@@ -46,4 +46,15 @@ class ProfileApiController extends Controller
             TripResource::collection($trips)
         );
     }
+
+    public function changePassword(Request $request)
+    {
+        return $this->service->changePassword($request);
+    }
+
+
+    public function deleteProfile(Request $request)
+    {
+        return $this->service->deleteProfile($request);
+    }
 }

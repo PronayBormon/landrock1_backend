@@ -57,6 +57,7 @@ class TripRepository
         return Trip::destroy($id);
     }
 
+
     public function booking($trip, $request, $totalPrice)
     {
         $booking = TripBooking::create([
@@ -70,15 +71,32 @@ class TripRepository
         return $booking;
     }
 
-    public function mytrips($request,$userid)
+    public function tripbooking($id)
+    {
+        $bookingRequest = TripBooking::with([
+            'trip',
+            'user',
+        ])->where('id', $id)->first();
+
+        return $bookingRequest;
+    }
+
+    public function mytrips($request, $userid)
     {
         $tripsIds = Trip::where('publisher_id', $userid)->orderby('id', 'desc')->pluck('id');
 
         $bookingRequest = TripBooking::with([
             'trip',
             'user',
-        ])->whereIn('trip_id', $tripsIds)->orderby('id', 'desc')->paginate($request->perPage??10);
+        ])->whereIn('trip_id', $tripsIds)->orderby('id', 'desc')->paginate($request->perPage ?? 10);
 
+        return $bookingRequest;
+    }
+
+    public function mytripUsers($request, $tripid)
+    {
+        $bookingRequest = TripBooking::where('trip_id', $tripid)->paginate($request->items ?? 10);
+        // dd($bookingRequest);
         return $bookingRequest;
     }
 }

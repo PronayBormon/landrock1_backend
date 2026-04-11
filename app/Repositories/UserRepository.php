@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Trip;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class UserRepository
 {
@@ -43,5 +44,17 @@ class UserRepository
         }
 
         return $query->paginate($type->per_page ?? 10);
+    }
+
+    public function updatePassword($userId, $password)
+    {
+        return User::where('id', $userId)->update([
+            'password' => Hash::make($password),
+        ]);
+    }
+
+    public function delete($userId)
+    {
+        return User::where('id', $userId)->delete();
     }
 }

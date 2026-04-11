@@ -42,6 +42,7 @@ class AuthenticationApiController extends Controller
         if (!$user) {
             $user = User::create([
                 // 'name' => $request->fullname,
+                'name' => Str::before($request->email, '@'),
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
