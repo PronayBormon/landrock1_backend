@@ -10,4 +10,5 @@ return [
     'smtp_setting' => 'SMTP সেটিংস',
     'stripe_setting' => 'স্ট্রাইপ সেটিংস',
     'paypal_setting' => 'পেপাল সেটিংস',
+    'subscribers' => 'সাবস্ক্রাইবাররা',
 ];

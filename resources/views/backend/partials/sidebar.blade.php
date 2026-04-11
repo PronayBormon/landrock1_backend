@@ -50,81 +50,7 @@
            </button>
 
            <div data-simplebar>
-               <!-- User -->
-               {{-- <div class="sidenav-user">
-                   <div class="dropdown-center text-center">
-                       <a class="topbar-link dropdown-toggle text-reset drop-arrow-none px-2"
-                           data-bs-toggle="dropdown"
-                           type="button"
-                           aria-haspopup="false"
-                           aria-expanded="false">
-                           <img src="{{ asset(auth()->user()->avatar ?? 'backend/assets/images/user.webp') }}"
-                               width="46"
-                               class="rounded-circle"
-                               alt="user-image">
-                           <span class="d-flex justify-content-center gap-1 sidenav-user-name my-2">
-                               <span>
-                                   <span
-                                       class="mb-0 fw-semibold lh-base fs-15">{{ ucfirst(auth()->user()->name ?? 'No name') }}</span>
-                                   <p class="my-0 fs-13 text-muted">{{ ucfirst(auth()->user()->role ?? 'Admin') }}</p>
-                               </span>
-
-                               <i class="ri-arrow-down-s-line d-block sidenav-user-arrow align-middle"></i>
-                           </span>
-                       </a>
-                       <div class="dropdown-menu dropdown-menu-end">
-                           <!-- item-->
-                           <div class="dropdown-header noti-title">
-                               <h6 class="text-overflow m-0">Welcome !</h6>
-                           </div>
-
-                           <!-- item-->
-                           <a href="javascript:void(0);"
-                               class="dropdown-item">
-                               <i class="ri-account-circle-line me-1 fs-16 align-middle"></i>
-                               <span class="align-middle">My Account</span>
-                           </a>
-
-                           <!-- item-->
-                           <a href="javascript:void(0);"
-                               class="dropdown-item">
-                               <i class="ri-wallet-3-line me-1 fs-16 align-middle"></i>
-                               <span class="align-middle">Wallet : <span class="fw-semibold">$89.25k</span></span>
-                           </a>
-
-                           <!-- item-->
-                           <a href="{{ route('admin.dashboard.system.settings') }}"
-                               class="dropdown-item">
-                               <i class="ri-settings-2-line me-1 fs-16 align-middle"></i>
-                               <span class="align-middle">Settings</span>
-                           </a>
-
-                           item
-                           <a href="javascript:void(0);"
-                               class="dropdown-item">
-                               <i class="ri-question-line me-1 fs-16 align-middle"></i>
-                               <span class="align-middle">Support</span>
-                           </a>
-
-                           <div class="dropdown-divider"></div>
-
-                           <!-- item-->
-                           <a href="javascript:void(0);"
-                               class="dropdown-item">
-                               <i class="ri-lock-line me-1 fs-16 align-middle"></i>
-                               <span class="align-middle">Lock Screen</span>
-                           </a>
-
-                           <!-- item-->
-                           <a href="javascript:void(0);"
-                               class="dropdown-item active fw-semibold text-danger">
-                               <i class="ri-logout-box-line me-1 fs-16 align-middle"></i>
-                               <span class="align-middle">Sign Out</span>
-                           </a>
-                       </div>
-                   </div>
-               </div> --}}
-
+            
                <!--- Sidenav Menu -->
                <ul class="side-nav">
                    <li class="side-nav-item">
@@ -136,34 +62,7 @@
                        </a>
                    </li>
 
-                   {{-- <li class="side-nav-item">
-                       <a data-bs-toggle="collapse"
-                           href="#sidebarContacts"
-                           aria-expanded="false"
-                           aria-controls="sidebarContacts"
-                           class="side-nav-link">
-                           <span class="menu-icon"><i class="ti ti-user-square-rounded"></i></span>
-                           <span class="menu-text"> Users</span>
-                           <span class="menu-arrow"></span>
-                       </a>
-                       <div class="collapse"
-                           id="sidebarContacts">
-                           <ul class="sub-menu">
-                               <li class="side-nav-item">
-                                   <a href="{{ route('admin.users.create') }}"
-                                       class="side-nav-link">
-                                       <span class="menu-text">New User</span>
-                                   </a>
-                               </li>
-                               <li class="side-nav-item">
-                                   <a href="{{ route('admin.users.index') }}"
-                                       class="side-nav-link">
-                                       <span class="menu-text">User List</span>
-                                   </a>
-                               </li>
-                           </ul>
-                       </div>
-                   </li> --}}
+                   
                    <li class="side-nav-item">
                        <a href="{{ route('admin.users.index') }}"
                            class="side-nav-link">
@@ -183,6 +82,13 @@
                            class="side-nav-link">
                            <span class="menu-icon"><i class="ti ti-file"></i></span>
                            <span class="menu-text"> {{ __('menu.pages') }} </span>
+                       </a>
+                   </li>
+                   <li class="side-nav-item">
+                       <a href="{{ route('admin.subscribers.index') }}"
+                           class="side-nav-link">
+                           <span class="menu-icon"><i class="ti ti-file"></i></span>
+                           <span class="menu-text"> {{ __('menu.subscribers') }} </span>
                        </a>
                    </li>
 
