@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\API\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->prefix('reviews')->group(function () {
