@@ -8,4 +8,8 @@ Route::middleware('auth:sanctum')->prefix('profile')->group(function () {
     Route::post('update', [ProfileApiController::class, 'updateProfile']);
     Route::get('details', [ProfileApiController::class, 'profile']);
     Route::get('my-trips', [ProfileApiController::class, 'myTrip']);
+
+
+    Route::post('/change-password', [ProfileApiController::class, 'changePassword']);
+    Route::delete('/delete', [ProfileApiController::class, 'deleteProfile']);
 });

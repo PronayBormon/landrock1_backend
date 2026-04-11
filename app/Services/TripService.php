@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Repositories\TripRepository;
+use App\Traits\ApiResponse;
 
 class TripService
 {
     protected $tripRepo;
+    use ApiResponse;
 
     public function __construct(TripRepository $tripRepo)
     {
@@ -35,7 +37,8 @@ class TripService
 
     public function create($data)
     {
-        // dd($data);
+        // dd($data['available_seat']);
+        $data['total_seat'] = $data['available_seat'];
         return $this->tripRepo->create($data);
     }
 
@@ -52,6 +55,37 @@ class TripService
     public function delete($id)
     {
         return $this->tripRepo->delete($id);
+    }
+
+    public function complete($id)
+    {
+        $trip = $this->tripRepo->find($id);
+
+        
+        if (!$trip) {
+            return $this->errorResponse('Trip not found');
+        }
+
+        $trip->update([
+            'ride_status' => 'completed'
+        ]);
+        
+        return $trip;
+    }
+    public function cancel($id)
+    {
+        $trip = $this->tripRepo->find($id);
+
+        
+        if (!$trip) {
+            return $this->errorResponse('Trip not found');
+        }
+
+        $trip->update([
+            'ride_status' => 'cancelled'
+        ]);
+        
+        return $trip;
     }
 
     public function calculateMatch($authUser, $publisher)
@@ -176,9 +210,7 @@ class TripService
         $trip = $this->tripRepo->find($id);
 
         if ($trip->available_seat < $request->seat_count) {
-            return response()->json([
-                'message' => 'Not enough seats available'
-            ], 400);
+            return $this->errorResponse('Not enough seats available');
         }
 
         $totalPrice = $trip->price_per_seat * $request->seat_count;
@@ -190,11 +222,45 @@ class TripService
 
     public function tripbooking($request)
     {
-
         $trip = $this->tripRepo->mytrips($request, auth()->id());
-        
-        
-
         return $trip;
+    }
+
+
+    public function tripusers($request, $id)
+    {
+        $trip = $this->tripRepo->find($id);
+
+        if (!$trip) {
+            return $this->errorResponse('Trip Not found');
+        }
+        if ($trip->publisher_id != auth()->id()) {
+            return $this->errorResponse('Trip Not found');
+        }
+
+        $users = $this->tripRepo->mytripUsers($request, $trip->id);
+
+        return $users;
+    }
+
+    public function triprequest($status, $id)
+    {
+        $tripbooking = $this->tripRepo->tripbooking($id);
+
+        if (!$tripbooking) {
+            return $this->errorResponse('Booking Not found');
+        }
+        $avlb_seat = null;
+        if ($status == 'approved') {
+            $avlb_seat = $tripbooking->trip->available_seat - $tripbooking->seat_count;
+        } elseif ($status == 'rejected' && $tripbooking->status == 'approved') {
+            $avlb_seat = $tripbooking->trip->available_seat + $tripbooking->seat_count;
+        } else {
+            $avlb_seat = $tripbooking->trip->available_seat;
+        }
+
+        $tripbooking->update(['status' => $status]);
+        $tripbooking->trip->update(['available_seat' => $avlb_seat]);
+        return $tripbooking;
     }
 }

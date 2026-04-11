@@ -34,6 +34,7 @@ class TripResource extends JsonResource
             'ride_time' => $this->ride_time,
 
             'available_seat' => $this->available_seat,
+            'total_seat' => $this->total_seat,
             'price_per_seat' => $this->price_per_seat,
             'status' => $this->ride_status,
             'match_percentage' => $this->match_percentage ?? 0,

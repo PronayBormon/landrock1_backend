@@ -73,4 +73,17 @@ class TripController extends Controller
 
         return $this->successResponse('Trip deleted successfully');
     }
+
+    public function completeTrip($id)
+    {
+        $this->service->complete($id);
+
+        return $this->successResponse('Trip completed successfully');
+    }
+    public function calcelledTrip($id)
+    {
+        $this->service->cancel($id);
+
+        return $this->successResponse('Trip cancelled successfully');
+    }
 }
