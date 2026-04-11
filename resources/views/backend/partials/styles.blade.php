@@ -34,7 +34,7 @@
         display: flex !important;
         justify-content: space-between;
         align-items: center;
-        background: #fff;
+        background: transparent;
         margin: 10px 0px;
     }
 

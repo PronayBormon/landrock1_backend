@@ -5,6 +5,7 @@ use App\Http\Controllers\Web\Backend\DashboardController;
 use App\Http\Controllers\Web\Backend\FAQ\FAQController;
 use App\Http\Controllers\Web\Backend\Pages\DynamicPagesController;
 use App\Http\Controllers\Web\Backend\Settings\SystemSettingsController;
+use App\Http\Controllers\Web\Backend\SubscriberController;
 use App\Http\Controllers\Web\Backend\UploadController;
 use App\Http\Controllers\Web\Backend\users\usercontroller;
 use Illuminate\Support\Facades\Route;
@@ -69,5 +70,9 @@ Route::group([
 
                 Route::delete('/delete/{faq}', 'destroy')->name('delete');
             });
+
+
+        Route::get('/subscribers', [SubscriberController::class, 'index'])->name('admin.subscribers.index');
+        Route::delete('/subscribers/{id}', [SubscriberController::class, 'delete'])->name('admin.subscribers.delete');
     });
 });
