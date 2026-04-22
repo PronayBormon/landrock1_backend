@@ -1,0 +1,31 @@
+* [33ma9ec214[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdev[m[33m)[m update
+*   [33m7dc3663[m Merge branch 'main' of https://github.com/PronayBormon/landrock1_backend into dev
+[32m|[m[33m\[m  
+[32m|[m *   [33m5b8d4e1[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'main' of https://github.com/PronayBormon/landrock1_backend
+[32m|[m [34m|[m[35m\[m  
+[32m|[m [34m|[m *   [33m6437352[m Merge pull request #1 from PronayBormon/dev
+[32m|[m [34m|[m [36m|[m[1;31m\[m  
+* [34m|[m [36m|[m [1;31m|[m [33m64a8c00[m[33m ([m[1;32mbackup-main[m[33m)[m THis is latest and add twilio service and controller
+[34m|[m[34m/[m [36m/[m [1;31m/[m  
+* [36m|[m [1;31m/[m [33m29fbcb4[m[33m ([m[1;31morigin/dev[m[33m)[m update name
+[1;31m|[m [36m|[m[1;31m/[m  
+[1;31m|[m[1;31m/[m[36m|[m   
+* [36m|[m [33m6baca44[m - I've developed the trip request accept API. - I've developed the trip request reject api. - I've developed the trip users list api. - I've developed the mark as complete api. - I've developed the mark as cancelled API. - I've developed the messages packages api. - I've developed the review complete module api. - I've developed the subscribe api.
+[36m|[m[36m/[m  
+* [33md52763d[m - I've developed the trip request accept API. - I've developed the trip request reject api. - I've developed the trip users list api. - I've developed the mark as complete api. - I've developed the mark as cancelled API. - I've developed the messages packages api. - I've developed the review complete module api. - I've developed the subscribe api.
+* [33m72cdcaf[m - I've developed the unauthicate trip list api. - I've developed the request a trip API. - I've developed the my trip list API. - I've developed the trip request list API.
+* [33m72cfe1e[m update
+* [33ma68b3be[m update
+* [33m754b08e[m - I've developed the admin dashboard template. - I've developed the login API. - I've developed the register API. - I've developed the forget password API. - I've developed the verify otp API. - I've developed the resend otp API.
+*   [33macb982d[m Merge branch 'main' of https://github.com/PronayBormon/landrock1_backend
+[1;32m|[m[1;33m\[m  
+[1;32m|[m * [33m48ab644[m update spleeling Dashboard.
+[1;32m|[m *   [33m27c4afb[m Merge branch 'main' of https://github.com/PronayBormon/landrock1_backend into dev
+[1;32m|[m [1;34m|[m[1;35m\[m  
+[1;32m|[m [1;34m|[m * [33m312593d[m Create main.yml
+[1;32m|[m * [1;35m|[m [33m474629f[m git push
+[1;32m|[m [1;35m|[m[1;35m/[m  
+[1;32m|[m * [33m43770e0[m update localization language
+* [1;35m|[m [33m8ccd354[m local change
+[1;35m|[m[1;35m/[m  
+* [33mdcff3b3[m update
