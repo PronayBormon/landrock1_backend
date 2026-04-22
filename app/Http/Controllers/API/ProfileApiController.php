@@ -22,6 +22,7 @@ class ProfileApiController extends Controller
 
     public function updateProfile(UpdateUserProfileRequest $request)
     {
+        // dd($request->all());
 
         $user = $this->service->updateProfile(auth()->user(), $request);
 

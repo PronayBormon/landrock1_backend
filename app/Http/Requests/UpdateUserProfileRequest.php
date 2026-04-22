@@ -33,7 +33,7 @@ class UpdateUserProfileRequest extends FormRequest
             'interested.*' => 'string',
             'personalization' => 'nullable|array',
             'personalization.*' => 'string',
-            'smoke' => 'nullable|in:yes,no',
+            'smoke' => 'nullable|in:oui,non',
             'pet' => 'nullable|string',
             'connect_like_rider' => 'nullable|string',
             'what_kind_ride' => 'nullable|string',

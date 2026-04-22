@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\Auth\AuthenticationApiController;
 use App\Http\Controllers\Api\SubscriberApiController;
+use App\Http\Controllers\API\TwilioController;
 use App\Models\SystemSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,10 @@ Route::get('systems', function () {
 });
 
 
+Route::post('/subscribe', [SubscriberApiController::class, 'subscribe']);
+
+Route::post('/send-otp', [TwilioController::class, 'sendOTP']);
+Route::post('/send-sms', [TwilioController::class, 'sendSMS']);
 // version One (V1) APIS 
 
 Route::prefix('v1')->group(function () {
@@ -47,5 +52,3 @@ Route::prefix('v1')->group(function () {
     require base_path('routes/api/v1/review.php');
 });
 
-
-Route::post('/subscribe', [SubscriberApiController::class, 'subscribe']);
