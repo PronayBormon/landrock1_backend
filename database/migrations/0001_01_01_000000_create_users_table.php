@@ -21,10 +21,10 @@ return new class extends Migration
             $table->string('avatar')->nullable();
 
             $table->enum('ride_style', [
-                'chill',
-                'talkative',
-                'quiet',
-                'work_friendly'
+                'détendu',
+                'bavard',
+                'calme',
+                'idéal_pour_travailler'
             ])->nullable();
 
             $table->enum('music_preference', [
@@ -32,17 +32,17 @@ return new class extends Migration
                 'pop',
                 'afro',
                 'rock',
-                'no_music'
+                'sans_musique'
             ])->nullable();
 
             $table->enum('conversation_level', [
-                'yes',
-                'little',
-                'prefer_quiet'
+                'j’aime_discuter',
+                'un_peu',
+                'je_préfère_le_calme'
             ])->nullable();
             $table->enum('smoke', [
-                'yes',
-                'no',
+                'oui',
+                'non',
             ])->nullable();
 
             $table->json('interested')->nullable();
