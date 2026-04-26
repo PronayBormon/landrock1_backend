@@ -23,7 +23,7 @@ class UpdateUserProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:10240',
+            'avatar' => 'nullable|image|max:10240',
             'name' => 'required|string|max:255',
             'bio' => 'nullable|string',
             'ride_style' => 'nullable|string',
