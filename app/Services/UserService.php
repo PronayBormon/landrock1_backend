@@ -37,7 +37,18 @@ class UserService
 
         // Handle avatar
         if ($request->hasFile('avatar')) {
-            $data['avatar'] = 'storage/' . $request->file('avatar')->store('avatars', 'public');
+
+            $image = $request->file('avatar');
+
+            $fileName = time() . '.' . $image->getClientOriginalExtension();
+
+            $file = $image->storeAs(
+                'user/avatar',   // folder
+                $fileName,       // filename
+                'public'         // disk
+            );
+
+            $data['avatar'] = 'storage/' . $file;
         }
 
         return $this->repository->update($user->id, $data);

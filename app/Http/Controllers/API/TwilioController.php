@@ -15,53 +15,28 @@ class TwilioController extends Controller
         $this->twilio = $twilio;
     }
 
-    /**
-     * Send normal SMS
-     */
-    public function sendSMS(Request $request)
+    public function sendOtp(Request $request, TwilioService $twilio)
     {
         $request->validate([
-            'phone'   => 'required|string',
-            'message' => 'required|string',
+            'phone' => 'required'
         ]);
 
-        $response = $this->twilio->sendSMS(
-            $request->phone,
-            $request->message
-        );
+        $otp = rand(100000, 999999);
 
-        return response()->json($response, $response['success'] ? 200 : 422);
-    }
+        // Save OTP
+        // Otp::updateOrCreate(
+        //     ['phone' => $request->phone],
+        //     [
+        //         'otp' => $otp,
+        //         'expires_at' => Carbon::now()->addMinutes(5)
+        //     ]
+        // );
 
-    /**
-     * Send OTP
-     */
-    public function sendOTP(Request $request)
-    {
-        $request->validate([
-            'phone' => 'required|string',
+        // Send SMS
+        $twilio->sendOtp($request->phone, $otp);
+
+        return response()->json([
+            'message' => 'OTP sent successfully'
         ]);
-
-        $response = $this->twilio->sendOTP($request->phone);
-
-        return response()->json($response, $response['success'] ? 200 : 422);
-    }
-
-    /**
-     * Verify OTP
-     */
-    public function verifyOTP(Request $request)
-    {
-        $request->validate([
-            'phone' => 'required|string',
-            'code'  => 'required|string',
-        ]);
-
-        $response = $this->twilio->verifyOTP(
-            $request->phone,
-            $request->code
-        );
-
-        return response()->json($response, $response['success'] ? 200 : 422);
     }
 }

@@ -42,7 +42,7 @@ Route::get('systems', function () {
 
 Route::post('/subscribe', [SubscriberApiController::class, 'subscribe']);
 
-Route::post('/send-otp', [TwilioController::class, 'sendOTP']);
+Route::post('/send-otp', [TwilioController::class, 'sendOtp']);
 Route::post('/send-sms', [TwilioController::class, 'sendSMS']);
 // version One (V1) APIS 
 
