@@ -20,6 +20,8 @@ class Trip extends Model
         'ride_status',
         'total_seat',
         'publisher_id',
+        "car_name",
+        "color",
     ];
 
     public function user()

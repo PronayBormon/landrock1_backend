@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\Auth\PhoneVerificationController;
 use App\Http\Controllers\API\ProfileApiController;
 use Illuminate\Support\Facades\Route;
 
@@ -12,4 +13,8 @@ Route::middleware('auth:sanctum')->prefix('profile')->group(function () {
 
     Route::post('/change-password', [ProfileApiController::class, 'changePassword']);
     Route::delete('/delete', [ProfileApiController::class, 'deleteProfile']);
+
+
+    Route::post('/send-otp', [PhoneVerificationController::class, 'sendOtp']);
+    Route::post('/verify-otp', [PhoneVerificationController::class, 'verifyOtp']);
 });

@@ -33,6 +33,8 @@ class StoreTripRequest extends FormRequest
 
             'ride_date' => 'required|date',
             'ride_time' => 'required',
+            "car_name" => 'required',
+            "color" => 'required',
 
             'available_seat' => 'required|integer|min:1',
             'price_per_seat' => 'required|numeric|min:0'
