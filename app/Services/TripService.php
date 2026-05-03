@@ -37,7 +37,8 @@ class TripService
 
     public function create($data)
     {
-        // dd($data['available_seat']);
+
+
         $data['total_seat'] = $data['available_seat'];
         return $this->tripRepo->create($data);
     }
@@ -61,7 +62,7 @@ class TripService
     {
         $trip = $this->tripRepo->find($id);
 
-        
+
         if (!$trip) {
             return $this->errorResponse('Trip not found');
         }
@@ -69,14 +70,14 @@ class TripService
         $trip->update([
             'ride_status' => 'completed'
         ]);
-        
+
         return $trip;
     }
     public function cancel($id)
     {
         $trip = $this->tripRepo->find($id);
 
-        
+
         if (!$trip) {
             return $this->errorResponse('Trip not found');
         }
@@ -84,7 +85,7 @@ class TripService
         $trip->update([
             'ride_status' => 'cancelled'
         ]);
-        
+
         return $trip;
     }
 

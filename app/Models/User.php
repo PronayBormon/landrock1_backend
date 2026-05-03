@@ -36,6 +36,8 @@ class User extends Authenticatable
         "pet",
         "connect_like_rider",
         "what_kind_ride",
+        "phone",
+        "phone_verified_at",
     ];
 
     /**

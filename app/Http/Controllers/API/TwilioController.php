@@ -23,14 +23,6 @@ class TwilioController extends Controller
 
         $otp = rand(100000, 999999);
 
-        // Save OTP
-        // Otp::updateOrCreate(
-        //     ['phone' => $request->phone],
-        //     [
-        //         'otp' => $otp,
-        //         'expires_at' => Carbon::now()->addMinutes(5)
-        //     ]
-        // );
 
         // Send SMS
         $twilio->sendOtp($request->phone, $otp);

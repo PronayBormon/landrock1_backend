@@ -32,6 +32,8 @@ class TripResource extends JsonResource
 
             'ride_date' => $this->ride_date,
             'ride_time' => $this->ride_time,
+            'car_name' => $this->car_name,
+            'color' => $this->color,
 
             'available_seat' => $this->available_seat,
             'total_seat' => $this->total_seat,

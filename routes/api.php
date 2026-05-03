@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthenticationApiController;
+use App\Http\Controllers\API\Auth\PhoneVerificationController;
 use App\Http\Controllers\Api\SubscriberApiController;
 use App\Http\Controllers\API\TwilioController;
 use App\Models\SystemSetting;
@@ -42,13 +43,9 @@ Route::get('systems', function () {
 
 Route::post('/subscribe', [SubscriberApiController::class, 'subscribe']);
 
-Route::post('/send-otp', [TwilioController::class, 'sendOtp']);
-Route::post('/send-sms', [TwilioController::class, 'sendSMS']);
-// version One (V1) APIS 
 
 Route::prefix('v1')->group(function () {
     require base_path('routes/api/v1/trip.php');
     require base_path('routes/api/v1/profile.php');
     require base_path('routes/api/v1/review.php');
 });
-

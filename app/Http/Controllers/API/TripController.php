@@ -42,8 +42,19 @@ class TripController extends Controller
 
     public function store(StoreTripRequest $request)
     {
+        $user = auth()->user();
         $data = $request->validated();
-        $data['publisher_id'] = auth()->id();
+        $data['publisher_id'] = $user->id;
+
+        // block if not verified
+        if (!$user || !$user->phone_verified_at) {
+            return response()->json([
+                'code' => 403,
+                'success' => false,
+                'errors' => 'Please verify your phone number first',
+                'message' => 'Please verify your phone number first',
+            ], 403);
+        }
 
         $trip = $this->service->create($data);
 

@@ -20,6 +20,8 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'avatar' => $this->avatar,
             'bio' => $this->bio,
+            'phone' => $this->phone,
+            'phone_is_verified' => $this->phone_verified_at ? true : false,
             'ride_style' => $this->ride_style,
             'music_preference' => $this->music_preference,
             'conversation_level' => $this->conversation_level,
@@ -32,6 +34,5 @@ class UserResource extends JsonResource
             'avg_review' => $this->avg_review,
             'created_at' => $this->created_at?->toDateTimeString(),
         ];
-        
     }
 }
