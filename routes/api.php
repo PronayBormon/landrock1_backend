@@ -2,8 +2,12 @@
 
 use App\Http\Controllers\API\Auth\AuthenticationApiController;
 use App\Http\Controllers\API\Auth\PhoneVerificationController;
+<<<<<<< HEAD
 use App\Http\Controllers\API\NotificationController;
 use App\Http\Controllers\API\SubscriberApiController;
+=======
+use App\Http\Controllers\Api\SubscriberApiController;
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
 use App\Http\Controllers\API\TwilioController;
 use App\Models\SystemSetting;
 use Illuminate\Http\Request;
@@ -40,7 +44,13 @@ Route::get('systems', function () {
     ]);
 });
 
+<<<<<<< HEAD
 Route::post('/subscribe', [SubscriberApiController::class, 'subscribe']);
+=======
+
+Route::post('/subscribe', [SubscriberApiController::class, 'subscribe']);
+
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
 
 Route::prefix('v1')->group(function () {
     require base_path('routes/api/v1/trip.php');

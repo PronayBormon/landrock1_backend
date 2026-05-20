@@ -121,14 +121,21 @@ class TripService
     {
         $trip = $this->ownedTripOrError($id);
 
+<<<<<<< HEAD
         if ($trip instanceof \Illuminate\Http\JsonResponse) {
             return $trip;
+=======
+
+        if (!$trip) {
+            return $this->errorResponse('Trip not found');
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
         }
 
         $trip->update([
             'ride_status' => 'completed'
         ]);
 
+<<<<<<< HEAD
         $this->notifyTripUsers(
             $trip,
             'trip_completed',
@@ -136,20 +143,29 @@ class TripService
             $this->tripMessage('A trip you are connected with was completed.', $trip)
         );
 
+=======
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
         return $trip;
     }
     public function cancel($id)
     {
         $trip = $this->ownedTripOrError($id);
 
+<<<<<<< HEAD
         if ($trip instanceof \Illuminate\Http\JsonResponse) {
             return $trip;
+=======
+
+        if (!$trip) {
+            return $this->errorResponse('Trip not found');
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
         }
 
         $trip->update([
             'ride_status' => 'cancelled'
         ]);
 
+<<<<<<< HEAD
         $this->notifyTripUsers(
             $trip,
             'trip_cancelled',
@@ -157,6 +173,8 @@ class TripService
             $this->tripMessage('A trip you are connected with was cancelled.', $trip)
         );
 
+=======
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
         return $trip;
     }
 

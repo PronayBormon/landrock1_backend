@@ -33,8 +33,13 @@ class UpdateTripRequest extends FormRequest
 
             'ride_date' => 'sometimes|date',
             'ride_time' => 'sometimes|date_format:H:i',
+<<<<<<< HEAD
             "car_name" => 'sometimes|string|max:255',
             "color" => 'sometimes|string|max:255',
+=======
+            "car_name" => 'required',
+            "color" => 'required',
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
 
             'available_seat' => 'sometimes|integer|min:1',
             'price_per_seat' => 'sometimes|numeric|min:0',
