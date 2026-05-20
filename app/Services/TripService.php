@@ -2,13 +2,17 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use App\Notifications\TripBookingNotification;
 use App\Notifications\UserActivityNotification;
 use App\Repositories\TripRepository;
 use App\Traits\ApiResponse;
+use Illuminate\Support\Facades\DB;
 
 class TripService
 {
+    private const CAR_EMISSION_KG_PER_KM = 0.192;
+
     protected $tripRepo;
     use ApiResponse;
 
@@ -69,6 +73,10 @@ class TripService
 
         $trip = $this->tripRepo->update($id, $data);
 
+        if (($data['ride_status'] ?? null) === 'completed') {
+            $trip = $this->applyCo2SavingsIfCompleted($trip);
+        }
+
         $this->notifyTripUsers(
             $trip,
             'trip_updated',
@@ -121,60 +129,41 @@ class TripService
     {
         $trip = $this->ownedTripOrError($id);
 
-<<<<<<< HEAD
+
         if ($trip instanceof \Illuminate\Http\JsonResponse) {
             return $trip;
-=======
+        }
 
-        if (!$trip) {
-            return $this->errorResponse('Trip not found');
->>>>>>> 00886d0de841d6b12064315085a82431be136494
+        return $this->markCompleted($trip);
+    }
+
+    public function updateStatus($id, string $status)
+    {
+        $trip = $this->tripRepo->find($id);
+
+        if ($status === 'completed') {
+            return $this->markCompleted($trip);
         }
 
         $trip->update([
-            'ride_status' => 'completed'
+            'ride_status' => $status
         ]);
 
-<<<<<<< HEAD
-        $this->notifyTripUsers(
-            $trip,
-            'trip_completed',
-            'Trip completed',
-            $this->tripMessage('A trip you are connected with was completed.', $trip)
-        );
-
-=======
->>>>>>> 00886d0de841d6b12064315085a82431be136494
         return $trip;
     }
     public function cancel($id)
     {
         $trip = $this->ownedTripOrError($id);
 
-<<<<<<< HEAD
+
         if ($trip instanceof \Illuminate\Http\JsonResponse) {
             return $trip;
-=======
-
-        if (!$trip) {
-            return $this->errorResponse('Trip not found');
->>>>>>> 00886d0de841d6b12064315085a82431be136494
         }
 
         $trip->update([
             'ride_status' => 'cancelled'
         ]);
 
-<<<<<<< HEAD
-        $this->notifyTripUsers(
-            $trip,
-            'trip_cancelled',
-            'Trip cancelled',
-            $this->tripMessage('A trip you are connected with was cancelled.', $trip)
-        );
-
-=======
->>>>>>> 00886d0de841d6b12064315085a82431be136494
         return $trip;
     }
 
@@ -399,6 +388,70 @@ class TripService
         }
 
         return $trip;
+    }
+
+    private function markCompleted($trip)
+    {
+        $trip->update([
+            'ride_status' => 'completed'
+        ]);
+
+        return $this->applyCo2SavingsIfCompleted($trip);
+    }
+
+    private function applyCo2SavingsIfCompleted($trip)
+    {
+        return DB::transaction(function () use ($trip) {
+            $trip = $trip->fresh(['bookings.user']);
+
+            if ($trip->ride_status !== 'completed' || (float) $trip->co2_saved_kg > 0) {
+                return $trip;
+            }
+
+            $approvedBookings = $trip->bookings->where('status', 'approved');
+            $distanceKm = $this->calculateDistanceKm(
+                (float) $trip->from_latitude,
+                (float) $trip->from_longitude,
+                (float) $trip->to_latitude,
+                (float) $trip->to_longitude
+            );
+
+            $totalPassengerSeats = (int) $approvedBookings->sum('seat_count');
+            $totalCo2SavedKg = round($distanceKm * $totalPassengerSeats * self::CAR_EMISSION_KG_PER_KM, 2);
+
+            $trip->update([
+                'co2_saved_kg' => $totalCo2SavedKg,
+            ]);
+
+            if ($totalCo2SavedKg <= 0) {
+                return $trip->fresh(['bookings.user']);
+            }
+
+            User::whereKey($trip->publisher_id)->increment('co2_saved_kg', $totalCo2SavedKg);
+
+            $approvedBookings->each(function ($booking) use ($distanceKm) {
+                $passengerCo2SavedKg = round($distanceKm * (int) $booking->seat_count * self::CAR_EMISSION_KG_PER_KM, 2);
+
+                if ($passengerCo2SavedKg > 0) {
+                    User::whereKey($booking->user_id)->increment('co2_saved_kg', $passengerCo2SavedKg);
+                }
+            });
+
+            return $trip->fresh(['bookings.user']);
+        });
+    }
+
+    private function calculateDistanceKm(float $fromLatitude, float $fromLongitude, float $toLatitude, float $toLongitude): float
+    {
+        $earthRadiusKm = 6371;
+
+        $latDelta = deg2rad($toLatitude - $fromLatitude);
+        $lngDelta = deg2rad($toLongitude - $fromLongitude);
+
+        $a = sin($latDelta / 2) ** 2
+            + cos(deg2rad($fromLatitude)) * cos(deg2rad($toLatitude)) * sin($lngDelta / 2) ** 2;
+
+        return $earthRadiusKm * 2 * atan2(sqrt($a), sqrt(1 - $a));
     }
 
     private function notifyTripUsers($trip, string $eventType, string $title, string $message): void

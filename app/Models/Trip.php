@@ -18,11 +18,19 @@ class Trip extends Model
         'available_seat',
         'price_per_seat',
         'ride_status',
+        'co2_saved_kg',
         'total_seat',
         'publisher_id',
         "car_name",
         "color",
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'co2_saved_kg' => 'decimal:2',
+        ];
+    }
 
     public function user()
     {

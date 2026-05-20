@@ -113,7 +113,7 @@ class TripController extends Controller
             return $trip;
         }
 
-        return $this->successResponse('Trip completed successfully');
+        return $this->successResponse('Trip completed successfully', new TripResource($trip));
     }
     public function calcelledTrip($id)
     {

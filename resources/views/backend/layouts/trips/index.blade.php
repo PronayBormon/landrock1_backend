@@ -23,6 +23,7 @@
                                         <th>To</th>
                                         <th>Publisher</th>
                                         <th>Status</th>
+                                        <th>CO2 Saved</th>
                                         <th>Ride Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -68,6 +69,10 @@
                     {
                         data: 'ride_status',
                         name: 'ride_status'
+                    },
+                    {
+                        data: 'co2_saved_kg',
+                        name: 'co2_saved_kg'
                     },
                     {
                         data: 'ride_date',

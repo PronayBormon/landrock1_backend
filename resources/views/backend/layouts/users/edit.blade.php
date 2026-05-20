@@ -86,6 +86,19 @@
 
                         </div>
 
+                        {{-- CO2 SAVED --}}
+                        <div class="mb-2">
+
+                            <small class="text-muted d-block">
+                                CO2 Saved
+                            </small>
+
+                            <div>
+                                {{ number_format((float) $user->co2_saved_kg, 2) }} kg
+                            </div>
+
+                        </div>
+
                         {{-- BIO --}}
                         <div class="mt-4 text-start">
 

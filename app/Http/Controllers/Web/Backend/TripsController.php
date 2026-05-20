@@ -52,6 +52,10 @@ class TripsController extends Controller
                     return $trip->ride_date ?? 'N/A';
                 })
 
+                ->addColumn('co2_saved_kg', function ($trip) {
+                    return number_format((float) $trip->co2_saved_kg, 2) . ' kg';
+                })
+
                 ->addColumn('action', function ($trip) {
 
                     $editUrl = route('admin.trips.edit', $trip->id);
@@ -115,9 +119,7 @@ class TripsController extends Controller
                 ->with('error', 'Trip not found');
         }
 
-        $trip->update([
-            'ride_status' => $request->ride_status
-        ]);
+        $this->service->updateStatus($id, $request->ride_status);
 
         return redirect()->back()
             ->with('success', 'Trip status updated successfully');

@@ -124,6 +124,18 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-6 mb-3">
+                                <label class="fw-semibold text-muted mb-1">
+                                    CO2 Saved
+                                </label>
+
+                                <div>
+                                    <strong>
+                                        {{ number_format((float) $trip->co2_saved_kg, 2) }} kg
+                                    </strong>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>

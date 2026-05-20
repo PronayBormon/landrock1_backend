@@ -38,6 +38,7 @@ class User extends Authenticatable
         "what_kind_ride",
         "phone",
         "phone_verified_at",
+        "co2_saved_kg",
     ];
 
     /**
@@ -62,6 +63,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'interested' => 'array',
             'personalization' => 'array',
+            'co2_saved_kg' => 'decimal:2',
         ];
     }
 
