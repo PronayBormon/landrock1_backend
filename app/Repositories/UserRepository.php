@@ -40,7 +40,7 @@ class UserRepository
         }
 
         if ($type->type === 'completed') {
-            $query->whereDate('ride_date', '<', Carbon::today());
+            $query->where('ride_status', 'completed');
         }
 
         return $query->paginate($type->per_page ?? 10);

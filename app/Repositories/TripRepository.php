@@ -93,10 +93,35 @@ class TripRepository
         return $bookingRequest;
     }
 
+    public function joinedTrips($request, $userid)
+    {
+        $query = TripBooking::with([
+            'trip.publisher',
+            'user',
+        ])->where('user_id', $userid);
+
+        if (!empty($request->status)) {
+            $query->where('status', $request->status);
+        }
+
+        if (!empty($request->type) && $request->type === 'upcoming') {
+            $query->whereHas('trip', function ($q) {
+                $q->whereDate('ride_date', '>=', now()->toDateString());
+            });
+        }
+
+        if (!empty($request->type) && $request->type === 'completed') {
+            $query->whereHas('trip', function ($q) {
+                $q->where('ride_status', 'completed');
+            });
+        }
+
+        return $query->orderby('id', 'desc')->paginate($request->per_page ?? 10);
+    }
+
     public function mytripUsers($request, $tripid)
     {
-        $bookingRequest = TripBooking::where('trip_id', $tripid)->paginate($request->items ?? 10);
-        // dd($bookingRequest);
+        $bookingRequest = TripBooking::with('user')->where('trip_id', $tripid)->get();
         return $bookingRequest;
     }
 }

@@ -27,7 +27,7 @@
            @include('backend.partials.styles')
        </head>
 
-       <body>
+       <body style="font-family: Outfit,serif;">
            <!-- Begin page -->
            <div class="wrapper">
 
@@ -71,34 +71,39 @@
                class="position-fixed top-0 end-0 p-3"
                style="z-index: 1055;"></div>
 
-           @if (session('t-error'))
-               <script>
-                   document.addEventListener('DOMContentLoaded', function() {
-                       const container = document.getElementById('toastContainer');
-                       const toastId = 'toast-error-' + Date.now();
-                       const toastHtml = `
-                <div id="${toastId}" class="toast align-items-center text-bg-danger border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
+           <script>
+               function showToast(type, message) {
+                   const container = document.getElementById('toastContainer');
+                   if (!container || !message) {
+                       return;
+                   }
+
+                   const toastId = 'toast-' + type + '-' + Date.now();
+                   const typeClass = type === 't-success' ? 'text-bg-success' :
+                       type === 't-warning' ? 'text-bg-warning' :
+                       type === 't-info' ? 'text-bg-info' :
+                       'text-bg-danger';
+
+                   const toastHtml = `
+                <div id="${toastId}" class="toast align-items-center ${typeClass} border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true">
                     <div class="d-flex">
-                        <div class="toast-body">
-                            {{ session('t-error') }}
-                        </div>
+                        <div class="toast-body">${message}</div>
                         <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
                 </div>
             `;
-                       container.insertAdjacentHTML('beforeend', toastHtml);
-                       const toastElement = document.getElementById(toastId);
-                       const bsToast = new bootstrap.Toast(toastElement, {
-                           delay: 5000
-                       });
-                       bsToast.show();
+                   container.insertAdjacentHTML('beforeend', toastHtml);
+                   const toastElement = document.getElementById(toastId);
+                   const bsToast = new bootstrap.Toast(toastElement, {
+                       delay: 5000
                    });
-               </script>
-           @endif
+                   bsToast.show();
+               }
+           </script>
            @foreach (['t-success', 't-error', 't-info', 't-warning'] as $msg)
                @if (session($msg))
                    <script>
-                       showToast('{{ $msg }}', '{{ session($msg) }}');
+                       showToast('{{ $msg }}', @json(session($msg)));
                    </script>
                @endif
            @endforeach

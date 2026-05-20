@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Notifications\UserActivityNotification;
 use App\Repositories\ReviewRepository;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Validator;
@@ -51,6 +52,20 @@ class ReviewService
         ];
 
         $review = $this->reviewRepo->create($data);
+        $review->loadMissing(['user', 'reviewer', 'trip']);
+
+        $review->user?->notify(new UserActivityNotification(
+            'review_received',
+            'New review received',
+            ($review->reviewer?->name ?? 'A user') . ' left you a review.',
+            [
+                'review_id' => $review->id,
+                'review_by' => $review->review_by,
+                'reviewer_name' => $review->reviewer?->name,
+                'trip_id' => $review->trip_id,
+                'star' => $review->star,
+            ]
+        ));
 
         return $this->successResponse('Review successfull', $review, 200);
     }
@@ -76,6 +91,18 @@ class ReviewService
         }
 
         $this->reviewRepo->delete($id);
+
+        auth()->user()?->notify(new UserActivityNotification(
+            'review_deleted',
+            'Review deleted',
+            'Your review was deleted successfully.',
+            [
+                'review_id' => $review->id,
+                'trip_id' => $review->trip_id,
+                'reviewed_user_id' => $review->user_id,
+            ]
+        ));
+
         return $this->successResponse('Review deleted successfully', 200);
     }
 }

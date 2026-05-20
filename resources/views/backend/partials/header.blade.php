@@ -70,7 +70,7 @@
                     <!-- Language Dropdown -->
                     
                     <!-- Language Dropdown -->
-                    @php
+                    {{-- @php
                         use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
                     @endphp
 
@@ -80,8 +80,6 @@
                                 data-bs-toggle="dropdown"
                                 data-bs-offset="0,32"
                                 type="button">
-
-                                {{-- Current Language Flag --}}
                                 <img src="/backend/assets/images/flags/{{ app()->getLocale() == 'bn' ? 'bd' : 'us' }}.svg"
                                     class="w-100 rounded"
                                     height="18">
@@ -89,7 +87,6 @@
 
                             <div class="dropdown-menu dropdown-menu-end">
 
-                                {{-- English --}}
                                 <a href="{{ LaravelLocalization::getLocalizedURL('en') }}"
                                     class="dropdown-item">
                                     <img src="/backend/assets/images/flags/us.svg"
@@ -98,7 +95,6 @@
                                     <span>English</span>
                                 </a>
 
-                                {{-- Bangla --}}
                                 <a href="{{ LaravelLocalization::getLocalizedURL('bn') }}"
                                     class="dropdown-item">
                                     <img src="/backend/assets/images/flags/bd.svg"
@@ -109,10 +105,10 @@
 
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
 
                     <!-- Notification Dropdown -->
-                    <div class="topbar-item">
+                    {{-- <div class="topbar-item">
                         <div class="dropdown">
                             <button class="topbar-link dropdown-toggle drop-arrow-none"
                                 data-bs-toggle="dropdown"
@@ -303,114 +299,6 @@
                                 </a>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- Apps Dropdown -->
-                    {{-- <div class="topbar-item d-none d-sm-flex">
-                        <div class="dropdown">
-                            <button class="topbar-link dropdown-toggle drop-arrow-none"
-                                data-bs-toggle="dropdown"
-                                data-bs-offset="0,25"
-                                type="button"
-                                aria-haspopup="false"
-                                aria-expanded="false">
-                                <i class="ri-apps-2-add-line fs-22"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-end dropdown-menu-lg p-0">
-                                <div class="p-2">
-                                    <div class="row g-0">
-                                        <div class="col">
-                                            <a class="dropdown-icon-item"
-                                                href="#">
-                                                <img src="/backend/assets/images/brands/slack.svg"
-                                                    alt="slack">
-                                                <span>Slack</span>
-                                            </a>
-                                        </div>
-                                        <div class="col">
-                                            <a class="dropdown-icon-item"
-                                                href="#">
-                                                <img src="/backend/assets/images/brands/gitlab.svg"
-                                                    alt="Github">
-                                                <span>Gitlab</span>
-                                            </a>
-                                        </div>
-                                        <div class="col">
-                                            <a class="dropdown-icon-item"
-                                                href="#">
-                                                <img src="/backend/assets/images/brands/dribbble.svg"
-                                                    alt="dribbble">
-                                                <span>Dribbble</span>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="row g-0">
-                                        <div class="col">
-                                            <a class="dropdown-icon-item"
-                                                href="#">
-                                                <img src="/backend/assets/images/brands/bitbucket.svg"
-                                                    alt="bitbucket">
-                                                <span>Bitbucket</span>
-                                            </a>
-                                        </div>
-                                        <div class="col">
-                                            <a class="dropdown-icon-item"
-                                                href="#">
-                                                <img src="/backend/assets/images/brands/dropbox.svg"
-                                                    alt="dropbox">
-                                                <span>Dropbox</span>
-                                            </a>
-                                        </div>
-                                        <div class="col">
-                                            <a class="dropdown-icon-item"
-                                                href="#">
-                                                <img src="/backend/assets/images/brands/google-cloud.svg"
-                                                    alt="G Suite">
-                                                <span>G Cloud</span>
-                                            </a>
-                                        </div>
-                                    </div> <!-- end row-->
-
-                                    <div class="row g-0">
-                                        <div class="col">
-                                            <a class="dropdown-icon-item"
-                                                href="#">
-                                                <img src="/backend/assets/images/brands/aws.svg"
-                                                    alt="bitbucket">
-                                                <span>AWS</span>
-                                            </a>
-                                        </div>
-                                        <div class="col">
-                                            <a class="dropdown-icon-item"
-                                                href="#">
-                                                <img src="/backend/assets/images/brands/digital-ocean.svg"
-                                                    alt="dropbox">
-                                                <span>Server</span>
-                                            </a>
-                                        </div>
-                                        <div class="col">
-                                            <a class="dropdown-icon-item"
-                                                href="#">
-                                                <img src="/backend/assets/images/brands/bootstrap.svg"
-                                                    alt="G Suite">
-                                                <span>Bootstrap</span>
-                                            </a>
-                                        </div>
-                                    </div> <!-- end row-->
-                                </div>
-                            </div>
-                        </div>
-                    </div> --}}
-
-                    <!-- Button Trigger Customizer Offcanvas -->
-                    {{-- <div class="topbar-item d-none d-sm-flex">
-                        <button class="topbar-link"
-                            data-bs-toggle="offcanvas"
-                            data-bs-target="#theme-settings-offcanvas"
-                            type="button">
-                            <i class="ri-settings-4-line fs-22"></i>
-                        </button>
                     </div> --}}
 
                     <!-- Light/Dark Mode Button -->
@@ -433,8 +321,8 @@
                                 aria-haspopup="false"
                                 aria-expanded="false">
                                 <img src="{{ asset(auth()->user()->avatar ?? 'backend/assets/images/user.webp') }}"
-                                    width="32"
-                                    class="rounded-circle me-lg-2 d-flex"
+                                    width="32" height="30" style="object-fit: cover"
+                                    class="rounded-circle me-lg-2 d-flex border-1 border-light"
                                     alt="user-image">
                                 <span class="d-lg-flex flex-column gap-1 d-none">
                                     <h5 class="my-0">{{ ucfirst(auth()->user()->name ?? 'No name') }}</h5>

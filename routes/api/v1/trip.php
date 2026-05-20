@@ -11,11 +11,9 @@ Route::get('unauthenticated/trips', [TripController::class, 'index']);
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('trips', [TripController::class, 'index']);
-    Route::get('trips/{trip}', [TripController::class, 'show']);
 
     Route::post('trips', [TripController::class, 'store']);
-    Route::post('trips/{trip}', [TripController::class, 'update']);
-    Route::delete('trips/{trip}', [TripController::class, 'destroy']);
+    Route::post('my-trips/{trip}/details/update', [TripController::class, 'updateMyTripDetails']);
     Route::post('trips/complete/{trip}', [TripController::class, 'completeTrip']);
     Route::post('trips/calcelled/{trip}', [TripController::class, 'calcelledTrip']);
 
@@ -26,7 +24,12 @@ Route::middleware('auth:sanctum')->group(function () {
      */
     Route::post('trip/booking', [TripBookingController::class, 'requestSeat']);
     Route::get('trips/request/list', [TripBookingController::class, 'tripRequestList']);
+    Route::get('trips/joined/list', [TripBookingController::class, 'joinedTripList']);
     Route::get('trips/users/list/{id}', [TripBookingController::class, 'tripusersList']);
     Route::post('trips/request/accept/{id}', [TripBookingController::class, 'tripRequestAccept']);
     Route::post('trips/request/reject/{id}', [TripBookingController::class, 'tripRequestReject']);
+
+    Route::get('trips/{trip}', [TripController::class, 'show']);
+    Route::post('trips/{trip}', [TripController::class, 'update']);
+    Route::delete('trips/{trip}', [TripController::class, 'destroy']);
 });

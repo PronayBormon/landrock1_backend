@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers\Web\Backend\users;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\UserService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use App\Http\Controllers\Controller;
-use Carbon\Carbon;
 
 class usercontroller extends Controller
 {
+    protected $service;
+
+    public function __construct(UserService $service)
+    {
+        $this->service = $service;
+    }
     public function userlist(Request $request)
     {
         if ($request->ajax()) {
@@ -46,7 +53,7 @@ class usercontroller extends Controller
                 ->addColumn('action', function ($row) {
                     return '
                         <a href="' . route('admin.users.edit', $row->id) . '"
-                        class="btn btn-sm btn-soft-primary rounded-pill me-1"
+                        class="btn btn-sm btn-soft-secondary rounded-pill me-1"
                         title="Edit">
                             <i class="ri-pencil-line"></i>
                         </a>
@@ -101,25 +108,34 @@ class usercontroller extends Controller
 
     public function userupdate(Request $request, $id)
     {
-        // dd($request->all());
-        $user = User::find($id);
+        $user = User::findOrFail($id);
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:6|confirmed',
             'role' => 'required',
-            'avatar' => 'nullable',
+
+            'phone' => 'nullable|string|max:20',
+            'bio' => 'nullable|string',
+
+            'ride_style' => 'nullable',
+            'music_preference' => 'nullable',
+            'conversation_level' => 'nullable',
+            'smoke' => 'nullable',
+
+            'pet' => 'nullable|string',
+            'connect_like_rider' => 'nullable|string',
+            'what_kind_ride' => 'nullable|string',
         ]);
 
-        $data = $request->only('name', 'email', 'role', 'avatar');
+        $this->service->adminUpdateProfile(
+            $user,
+            $request
+        );
 
-        if ($request->filled('password')) {
-            $data['password'] = bcrypt($request->password);
-        }
-
-        $user->update($data);
-
-        return redirect()->route('admin.users.index')
+        return redirect()
+            ->route('admin.users.index')
             ->with('t-success', 'User updated successfully.');
     }
 }

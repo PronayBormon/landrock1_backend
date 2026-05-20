@@ -1,7 +1,7 @@
 @extends('backend.master')
 
 @push('title')
-    System Settings
+    Users
 @endpush
 @push('styles')
     <!-- dropzone css -->
@@ -17,7 +17,7 @@
                 <div class="card">
                     <div class="card-header border-bottom border-dashed d-flex justify-content-between align-items-center">
                         <h4 class="header-title">Users</h4>
-                        <a href="{{ url('admin.users.create') }}"
+                        <a href="{{ route('admin.users.create') }}"
                             class="btn btn-soft-primary rounded-pill">New user</a>
                     </div>
                     <div class="card-body">

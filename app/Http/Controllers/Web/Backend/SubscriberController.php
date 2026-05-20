@@ -24,7 +24,7 @@ class SubscriberController extends Controller
 
                 ->addColumn('action', function ($row) {
                     return '
-                        <button class="btn btn-danger btn-sm delete-subscriber"
+                        <button class="btn btn-soft-danger btn-sm delete-subscriber"
                             data-id="'.$row->id.'">
                             Delete
                         </button>

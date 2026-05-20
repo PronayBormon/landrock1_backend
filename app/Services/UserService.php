@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Notifications\UserActivityNotification;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -51,7 +52,16 @@ class UserService
             $data['avatar'] = 'storage/' . $file;
         }
 
-        return $this->repository->update($user->id, $data);
+        $updatedUser = $this->repository->update($user->id, $data);
+
+        $updatedUser->notify(new UserActivityNotification(
+            'profile_updated',
+            'Profile updated',
+            'Your profile information was updated.',
+            ['user_id' => $updatedUser->id]
+        ));
+
+        return $updatedUser;
     }
 
     public function getProfile($user)
@@ -100,6 +110,13 @@ class UserService
 
         // ✅ Update password
         $this->repository->updatePassword($user->id, $request->new_password);
+
+        $user->notify(new UserActivityNotification(
+            'password_changed',
+            'Password changed',
+            'Your account password was changed successfully.',
+            ['user_id' => $user->id]
+        ));
 
         return response()->json([
             'success' => true,
@@ -150,5 +167,102 @@ class UserService
                 'message' => 'Something went wrong',
             ], 500);
         }
+    }
+
+
+    public function adminUpdateProfile($user, Request $request)
+    {
+        $data = $request->only([
+            'name',
+            'email',
+            'role',
+            'phone',
+            'bio',
+            'avatar',
+
+            'ride_style',
+            'music_preference',
+            'conversation_level',
+            'smoke',
+
+            'pet',
+            'connect_like_rider',
+            'what_kind_ride',
+        ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Arrays
+        |--------------------------------------------------------------------------
+        */
+
+        $data['interested'] = $request->filled('interested')
+            ? array_map('trim', explode(',', $request->interested))
+            : [];
+
+        $data['personalization'] = $request->filled('personalization')
+            ? array_map('trim', explode(',', $request->personalization))
+            : [];
+
+        /*
+        |--------------------------------------------------------------------------
+        | Avatar
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->hasFile('avatar')) {
+
+            $image = $request->file('avatar');
+
+            $fileName = time() . '.' . $image->getClientOriginalExtension();
+
+            $file = $image->storeAs(
+                'user/avatar',   // folder
+                $fileName,       // filename
+                'public'         // disk
+            );
+
+            $data['avatar'] = 'storage/' . $file;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Password
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('password')) {
+            $data['password'] = bcrypt($request->password);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Email Verification
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->email_verified == 1) {
+            $data['email_verified_at'] = now();
+        } else {
+            $data['email_verified_at'] = null;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Phone Verification
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->phone_verified == 1) {
+            $data['phone_verified_at'] = now();
+        } else {
+            $data['phone_verified_at'] = null;
+        }
+
+        return $this->repository->update(
+            $user->id,
+            $data
+        );
     }
 }

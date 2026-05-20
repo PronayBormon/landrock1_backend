@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\UserActivityNotification;
 use App\Traits\ApiResponse;
 use Ichtrojan\Otp\Otp;
 use Illuminate\Http\Request;
@@ -87,6 +88,12 @@ class AuthenticationApiController extends Controller
             'email_verified_at' => now()
         ]);
 
+        $user->notify(new UserActivityNotification(
+            'account_verified',
+            'Account verified',
+            'Your account email was verified successfully.',
+            ['user_id' => $user->id]
+        ));
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
@@ -124,6 +131,12 @@ class AuthenticationApiController extends Controller
         // Create Sanctum token
         $token = $user->createToken('auth_token')->plainTextToken;
 
+        $user->notify(new UserActivityNotification(
+            'login',
+            'New login',
+            'Your account was logged in successfully.',
+            ['user_id' => $user->id]
+        ));
 
         $data = [
             'token' => $token,
@@ -213,6 +226,13 @@ class AuthenticationApiController extends Controller
             'password' => Hash::make($request->password),
             'remember_token' => null
         ]);
+
+        $user->notify(new UserActivityNotification(
+            'password_reset',
+            'Password reset',
+            'Your account password was reset successfully.',
+            ['user_id' => $user->id]
+        ));
 
         // return response()->json([
         //     'status' => true,

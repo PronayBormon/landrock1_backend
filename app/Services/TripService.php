@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Notifications\TripBookingNotification;
+use App\Notifications\UserActivityNotification;
 use App\Repositories\TripRepository;
 use App\Traits\ApiResponse;
 
@@ -40,7 +42,16 @@ class TripService
 
 
         $data['total_seat'] = $data['available_seat'];
-        return $this->tripRepo->create($data);
+        $trip = $this->tripRepo->create($data);
+
+        $trip->publisher?->notify(new UserActivityNotification(
+            'trip_created',
+            'Trip created',
+            $this->tripMessage('Your trip was created.', $trip),
+            $this->tripNotificationData($trip)
+        ));
+
+        return $trip;
     }
 
     public function show($id)
@@ -50,41 +61,101 @@ class TripService
 
     public function update($id, $data)
     {
-        return $this->tripRepo->update($id, $data);
+        $trip = $this->ownedTripOrError($id);
+
+        if ($trip instanceof \Illuminate\Http\JsonResponse) {
+            return $trip;
+        }
+
+        $trip = $this->tripRepo->update($id, $data);
+
+        $this->notifyTripUsers(
+            $trip,
+            'trip_updated',
+            'Trip updated',
+            $this->tripMessage('A trip you are connected with was updated.', $trip)
+        );
+
+        return $trip;
+    }
+
+    public function updateMyTripDetails($id, array $data)
+    {
+        $trip = $this->ownedTripOrError($id);
+
+        if ($trip instanceof \Illuminate\Http\JsonResponse) {
+            return $trip;
+        }
+
+        $trip = $this->tripRepo->update($id, $data);
+
+        $this->notifyTripUsers(
+            $trip,
+            'trip_details_updated',
+            'Trip details updated',
+            $this->tripMessage('A trip you are connected with was updated.', $trip)
+        );
+
+        return $trip;
     }
 
     public function delete($id)
     {
+        $trip = $this->ownedTripOrError($id);
+
+        if ($trip instanceof \Illuminate\Http\JsonResponse) {
+            return $trip;
+        }
+
+        $this->notifyTripUsers(
+            $trip,
+            'trip_deleted',
+            'Trip deleted',
+            $this->tripMessage('A trip you are connected with was deleted.', $trip)
+        );
+
         return $this->tripRepo->delete($id);
     }
 
     public function complete($id)
     {
-        $trip = $this->tripRepo->find($id);
+        $trip = $this->ownedTripOrError($id);
 
-
-        if (!$trip) {
-            return $this->errorResponse('Trip not found');
+        if ($trip instanceof \Illuminate\Http\JsonResponse) {
+            return $trip;
         }
 
         $trip->update([
             'ride_status' => 'completed'
         ]);
 
+        $this->notifyTripUsers(
+            $trip,
+            'trip_completed',
+            'Trip completed',
+            $this->tripMessage('A trip you are connected with was completed.', $trip)
+        );
+
         return $trip;
     }
     public function cancel($id)
     {
-        $trip = $this->tripRepo->find($id);
+        $trip = $this->ownedTripOrError($id);
 
-
-        if (!$trip) {
-            return $this->errorResponse('Trip not found');
+        if ($trip instanceof \Illuminate\Http\JsonResponse) {
+            return $trip;
         }
 
         $trip->update([
             'ride_status' => 'cancelled'
         ]);
+
+        $this->notifyTripUsers(
+            $trip,
+            'trip_cancelled',
+            'Trip cancelled',
+            $this->tripMessage('A trip you are connected with was cancelled.', $trip)
+        );
 
         return $trip;
     }
@@ -218,6 +289,9 @@ class TripService
 
         $trip = $this->tripRepo->booking($trip, $request, $totalPrice);
 
+        $trip->trip->publisher?->notify(new TripBookingNotification($trip, 'booking_requested'));
+        $trip->user?->notify(new TripBookingNotification($trip, 'booking_created'));
+
         return $trip;
     }
 
@@ -225,6 +299,11 @@ class TripService
     {
         $trip = $this->tripRepo->mytrips($request, auth()->id());
         return $trip;
+    }
+
+    public function joinedTrips($request)
+    {
+        return $this->tripRepo->joinedTrips($request, auth()->id());
     }
 
 
@@ -251,7 +330,19 @@ class TripService
         if (!$tripbooking) {
             return $this->errorResponse('Booking Not found');
         }
-        $avlb_seat = null;
+
+        if ($tripbooking->trip?->publisher_id !== auth()->id()) {
+            return $this->errorResponse('Booking Not found', 404);
+        }
+
+        if ($tripbooking->status === $status) {
+            return $tripbooking;
+        }
+
+        if ($status === 'approved' && $tripbooking->trip->available_seat < $tripbooking->seat_count) {
+            return $this->errorResponse('Not enough seats available', 400);
+        }
+
         if ($status == 'approved') {
             $avlb_seat = $tripbooking->trip->available_seat - $tripbooking->seat_count;
         } elseif ($status == 'rejected' && $tripbooking->status == 'approved') {
@@ -262,6 +353,76 @@ class TripService
 
         $tripbooking->update(['status' => $status]);
         $tripbooking->trip->update(['available_seat' => $avlb_seat]);
+
+        $notificationType = $status === 'approved' ? 'booking_approved' : 'booking_rejected';
+        $tripbooking->user?->notify(new TripBookingNotification($tripbooking, $notificationType));
+        $tripbooking->trip->publisher?->notify(new UserActivityNotification(
+            $status === 'approved' ? 'booking_approval_sent' : 'booking_rejection_sent',
+            $status === 'approved' ? 'Booking approved' : 'Booking rejected',
+            $status === 'approved'
+                ? $this->tripMessage('You approved a booking request for', $tripbooking->trip)
+                : $this->tripMessage('You rejected a booking request for', $tripbooking->trip),
+            array_merge($this->tripNotificationData($tripbooking->trip), [
+                'booking_id' => $tripbooking->id,
+                'requester_id' => $tripbooking->user_id,
+                'status' => $tripbooking->status,
+            ])
+        ));
+
         return $tripbooking;
+    }
+
+    private function ownedTripOrError($id)
+    {
+        $trip = $this->tripRepo->find($id);
+
+        if ($trip->publisher_id !== auth()->id()) {
+            return $this->errorResponse('Trip not found', 404);
+        }
+
+        return $trip;
+    }
+
+    private function notifyTripUsers($trip, string $eventType, string $title, string $message): void
+    {
+        $trip->loadMissing(['publisher', 'bookings.user']);
+
+        collect([$trip->publisher])
+            ->merge($trip->bookings->pluck('user'))
+            ->filter()
+            ->unique('id')
+            ->each(function ($user) use ($eventType, $title, $message, $trip) {
+                $user->notify(new UserActivityNotification(
+                    $eventType,
+                    $title,
+                    $message,
+                    $this->tripNotificationData($trip)
+                ));
+            });
+    }
+
+    private function tripMessage(string $prefix, $trip): string
+    {
+        return trim($prefix . ' ' . $this->tripRoute($trip));
+    }
+
+    private function tripRoute($trip): string
+    {
+        $route = trim(($trip?->from_location ?? '') . ' to ' . ($trip?->to_location ?? ''));
+
+        return $route ?: 'Trip details are available in the app.';
+    }
+
+    private function tripNotificationData($trip): array
+    {
+        return [
+            'trip_id' => $trip?->id,
+            'publisher_id' => $trip?->publisher_id,
+            'from_location' => $trip?->from_location,
+            'to_location' => $trip?->to_location,
+            'ride_date' => $trip?->ride_date,
+            'ride_time' => $trip?->ride_time,
+            'ride_status' => $trip?->ride_status,
+        ];
     }
 }

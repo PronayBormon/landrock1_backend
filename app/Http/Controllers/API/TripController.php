@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateTripRequest;
 use App\Http\Resources\TripResource;
 use App\Services\TripService;
 use App\Traits\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TripController extends Controller
@@ -75,25 +76,52 @@ class TripController extends Controller
     {
         $trip = $this->service->update($id, $request->validated());
 
+        if ($trip instanceof JsonResponse) {
+            return $trip;
+        }
+
         return $this->successResponse('Trip Update successfully', new TripResource($trip));
+    }
+
+    public function updateMyTripDetails(UpdateTripRequest $request, $id)
+    {
+        $trip = $this->service->updateMyTripDetails($id, $request->validated());
+
+        if ($trip instanceof JsonResponse) {
+            return $trip;
+        }
+
+        return $this->successResponse('My trip details updated successfully', new TripResource($trip));
     }
 
     public function destroy($id)
     {
-        $this->service->delete($id);
+        $trip = $this->service->delete($id);
+
+        if ($trip instanceof JsonResponse) {
+            return $trip;
+        }
 
         return $this->successResponse('Trip deleted successfully');
     }
 
     public function completeTrip($id)
     {
-        $this->service->complete($id);
+        $trip = $this->service->complete($id);
+
+        if ($trip instanceof JsonResponse) {
+            return $trip;
+        }
 
         return $this->successResponse('Trip completed successfully');
     }
     public function calcelledTrip($id)
     {
-        $this->service->cancel($id);
+        $trip = $this->service->cancel($id);
+
+        if ($trip instanceof JsonResponse) {
+            return $trip;
+        }
 
         return $this->successResponse('Trip cancelled successfully');
     }
