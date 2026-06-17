@@ -5,10 +5,6 @@ namespace App\Http\Controllers\API\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\PhoneVerification;
 use App\Models\User;
-<<<<<<< HEAD
-use App\Notifications\UserActivityNotification;
-=======
->>>>>>> 00886d0de841d6b12064315085a82431be136494
 use App\Services\TwilioService;
 use App\Traits\ApiResponse;
 use Carbon\Carbon;
@@ -36,19 +32,6 @@ class PhoneVerificationController extends Controller
 
         $twilio->sendOtp($request->phone, $otp);
 
-<<<<<<< HEAD
-        $request->user()?->notify(new UserActivityNotification(
-            'phone_verification_otp_sent',
-            'Phone verification code sent',
-            'A phone verification code was sent to your phone number.',
-            [
-                'user_id' => $request->user()?->id,
-                'phone' => $request->phone,
-            ]
-        ));
-
-=======
->>>>>>> 00886d0de841d6b12064315085a82431be136494
         return $this->successResponse('OTP sent successfully', $data);
     }
 
@@ -90,19 +73,6 @@ class PhoneVerificationController extends Controller
             'phone_verified_at' => now()
         ]);
 
-<<<<<<< HEAD
-        $user->notify(new UserActivityNotification(
-            'phone_verified',
-            'Phone verified',
-            'Your phone number was verified successfully.',
-            [
-                'user_id' => $user->id,
-                'phone' => $request->phone,
-            ]
-        ));
-
-=======
->>>>>>> 00886d0de841d6b12064315085a82431be136494
         // optional: delete OTP
         $record->delete();
 

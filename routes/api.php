@@ -17,6 +17,9 @@ Route::prefix('auth')->controller(AuthenticationApiController::class)->group(fun
     Route::post('register', 'register');
     Route::post('register/verify', 'verifyOtp');
     Route::post('login', 'login');
+    // Route::get('google/redirect', 'redirectToGoogle');
+    // Route::get('google/callback', 'handleGoogleCallback');
+    Route::post('google', 'GoogleLogin');
     Route::post('forget/password', 'forgotPassword');
     Route::post('forget/verify', 'verifyForgotOtp');
     Route::post('forget/password/update', 'resetPassword');

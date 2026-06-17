@@ -24,13 +24,19 @@ class TripService
 
     public function list($perPage, $filters = [])
     {
-        $trips = $this->tripRepo->all($perPage, $filters);
+        $trips = $this->tripRepo->all($perPage);
 
         $authUser = auth()->user();
 
-        $trips->getCollection()->transform(function ($trip) use ($authUser) {
+        $selectedFilters = array_keys(array_filter($filters));
 
-            $match = $this->calculateMatch($authUser, $trip->publisher);
+        $trips->getCollection()->transform(function ($trip) use ($authUser, $selectedFilters) {
+
+            $match = $this->calculateMatch(
+                $authUser,
+                $trip->publisher,
+                $selectedFilters
+            );
 
             $trip->match_percentage = $match['percentage'];
             $trip->matches = $match['matches'];
@@ -38,7 +44,82 @@ class TripService
             return $trip;
         });
 
+        $sorted = $trips->getCollection()
+            ->sortByDesc('match_percentage')
+            ->values();
+
+        $trips->setCollection($sorted);
+
         return $trips;
+    }
+
+    public function listNoAuth($perPage, $filters = [])
+    {
+        $trips = $this->tripRepo->all($perPage);
+
+        $authUser = auth()->user();
+
+        $selectedFilters = array_keys(array_filter($filters));
+
+        $trips->getCollection()->transform(function ($trip) use ($authUser, $selectedFilters) {
+
+            $match = $this->calculateMatchNoAuth(
+                $authUser,
+                $trip->publisher,
+                $selectedFilters
+            );
+
+            $trip->match_percentage = $match['percentage'];
+            $trip->matches = $match['matches'];
+
+            return $trip;
+        });
+
+        $sorted = $trips->getCollection()
+            ->sortByDesc('match_percentage')
+            ->values();
+
+        $trips->setCollection($sorted);
+
+        return $trips;
+    }
+
+
+    public function calculateMatch(User $user, User $publisher, array $selectedFilters = [])
+    {
+        $score = 70; // base route compatibility
+        $matches = [];
+
+        if (
+            in_array('music_preference', $selectedFilters) &&
+            $user->music_preference === $publisher->music_preference
+        ) {
+            $score += 10;
+            $matches[] = 'Same music preference';
+        }
+
+        if (
+            in_array('ride_style', $selectedFilters) &&
+            $user->ride_style === $publisher->ride_style
+        ) {
+            $score += 10;
+            $matches[] = 'Same ride style';
+        }
+
+        if (
+            in_array('conversation_level', $selectedFilters) &&
+            $user->conversation_level === $publisher->conversation_level
+        ) {
+            $score += 10;
+            $matches[] = 'Same conversation level';
+        }
+
+        $score = min(100, $score);
+
+        return [
+            'percentage' => $score,
+            'matches' => $matches,
+        ];
     }
 
     public function create($data)
@@ -167,7 +248,7 @@ class TripService
         return $trip;
     }
 
-    public function calculateMatch($authUser, $publisher)
+    public function calculateMatchNoAuth($authUser, $publisher)
     {
         if (!$authUser || !$publisher) {
             return [

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Notifications\UserActivityNotification;
+use App\Services\SocialAuthService;
 use App\Traits\ApiResponse;
+use Laravel\Socialite\Facades\Socialite;
 use Ichtrojan\Otp\Otp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -274,5 +276,65 @@ class AuthenticationApiController extends Controller
         });
 
         return $this->successResponse('OTP resent successfully', $otp->token);
+    }
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->stateless()->redirect();
+    }
+
+    public function handleGoogleCallback(SocialAuthService $socialAuth)
+    {
+        try {
+            $googleUser = Socialite::driver('google')->stateless()->user();
+        } catch (\Exception $e) {
+            return $this->errorResponse('Unable to login with Google', 401);
+        }
+
+        return $this->completeGoogleLogin($socialAuth, $googleUser);
+    }
+
+    public function GoogleLogin(Request $request, SocialAuthService $socialAuth)
+    {
+        $token = $socialAuth->resolveGoogleToken($request);
+
+        if (empty($token)) {
+            return $this->errorResponse(
+                'Google credential, id_token, or access_token is required',
+                422
+            );
+        }
+
+        try {
+            if ($socialAuth->isGoogleIdToken($token)) {
+                $googleUser = $socialAuth->getGoogleUserFromIdToken($token);
+
+                if (! $googleUser) {
+                    return $this->errorResponse('Invalid Google credential', 401);
+                }
+            } else {
+                $googleUser = Socialite::driver('google')
+                    ->stateless()
+                    ->userFromToken($token);
+            }
+        } catch (\Exception $e) {
+            return $this->errorResponse('Invalid Google token', 401);
+        }
+
+        return $this->completeGoogleLogin($socialAuth, $googleUser);
+    }
+
+    private function completeGoogleLogin(SocialAuthService $socialAuth, $googleUser)
+    {
+        $user = $socialAuth->findOrCreateFromGoogle($googleUser);
+
+        $user->notify(new UserActivityNotification(
+            'login',
+            'New login',
+            'Your account was logged in with Google.',
+            ['user_id' => $user->id]
+        ));
+
+        return $this->successResponse('Login successful', $socialAuth->createAuthPayload($user));
     }
 }

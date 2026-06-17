@@ -320,7 +320,7 @@
                                 type="button"
                                 aria-haspopup="false"
                                 aria-expanded="false">
-                                <img src="{{ asset(auth()->user()->avatar ?? 'backend/assets/images/user.webp') }}"
+                                <img src="{{ auth()->user()->avatar ?? asset('backend/assets/images/user.webp') }}"
                                     width="32" height="30" style="object-fit: cover"
                                     class="rounded-circle me-lg-2 d-flex border-1 border-light"
                                     alt="user-image">

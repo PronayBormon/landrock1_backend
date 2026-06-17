@@ -21,6 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'google_id',
         'password',
         'avatar',
         'role',
@@ -69,11 +70,29 @@ class User extends Authenticatable
 
     public function getAvatarAttribute($value)
     {
-        if (!empty($value)) {
-            return asset($value);
+        return static::resolveAvatarUrl($value);
+    }
+
+    public static function resolveAvatarUrl(?string $value): ?string
+    {
+        if (empty($value)) {
+            return null;
         }
 
-        return $value;
+        // Fix legacy URLs double-wrapped with asset(), e.g. http://app.test/https://lh3.google...
+        if (preg_match('#^https?://[^/]+/(https?://.+)$#i', $value, $matches)) {
+            $value = $matches[1];
+        }
+
+        if (str_starts_with($value, '//')) {
+            return 'https:'.$value;
+        }
+
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return $value;
+        }
+
+        return asset($value);
     }
 
     // Reviews received
