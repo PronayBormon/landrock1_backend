@@ -32,7 +32,7 @@ class TripController extends Controller
             'ride_style',
         ]);
 
-        $trips = $this->service->listNoAuth($perPage, $filters);
+        $trips = $this->service->list($perPage, $filters);
 
         return $this->successResponse(
             'Trip List',
