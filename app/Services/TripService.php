@@ -208,8 +208,14 @@ class TripService
     {
         $trip = $this->tripRepo->find($id);
 
+<<<<<<< HEAD
         if ($status === 'completed') {
             return $this->markCompleted($trip);
+=======
+
+        if (!$trip) {
+            return $this->errorResponse('Trip not found');
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
         }
 
         $trip->update([
@@ -223,8 +229,13 @@ class TripService
         $trip = $this->ownedTripOrError($id);
 
 
+<<<<<<< HEAD
         if ($trip instanceof \Illuminate\Http\JsonResponse) {
             return $trip;
+=======
+        if (!$trip) {
+            return $this->errorResponse('Trip not found');
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
         }
 
         $trip->update([

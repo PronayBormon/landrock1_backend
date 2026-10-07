@@ -39,7 +39,10 @@ class User extends Authenticatable
         "what_kind_ride",
         "phone",
         "phone_verified_at",
+<<<<<<< HEAD
         "co2_saved_kg",
+=======
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
     ];
 
     /**

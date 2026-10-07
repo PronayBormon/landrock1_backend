@@ -23,7 +23,11 @@ class UpdateUserProfileRequest extends FormRequest
     public function rules(): array
     {
         return [
+<<<<<<< HEAD
             'avatar' => 'nullable|max:10240',
+=======
+            'avatar' => 'nullable|image|max:10240',
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
             'name' => 'required|string|max:255',
             'bio' => 'nullable|string',
             'ride_style' => 'nullable|string',

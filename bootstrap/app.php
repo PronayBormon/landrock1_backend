@@ -28,7 +28,11 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withBroadcasting(
         __DIR__ . '/../routes/channels.php',
+<<<<<<< HEAD
         ['prefix' => 'api', 'middleware' => ['auth:sanctum', 'throttle:api']],
+=======
+        ['prefix' => 'api', 'middleware' => ['auth:sanctum']],
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
     )
     ->withExceptions(function (Exceptions $exceptions): void {
         //

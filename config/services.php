@@ -42,10 +42,13 @@ return [
         'messaging_service_sid' => env('TWILIO_V_SID'),
     ],
 
+<<<<<<< HEAD
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+=======
+>>>>>>> 00886d0de841d6b12064315085a82431be136494
 ];

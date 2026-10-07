@@ -1,10 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Auth\AuthenticationApiController;
-use App\Http\Controllers\API\Auth\PhoneVerificationController;
-use App\Http\Controllers\API\NotificationController;
-use App\Http\Controllers\API\SubscriberApiController;
-use App\Http\Controllers\API\TwilioController;
+use App\Http\Controllers\Api\SubscriberApiController;
 use App\Models\SystemSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -45,18 +42,14 @@ Route::get('systems', function () {
 
 Route::post('/subscribe', [SubscriberApiController::class, 'subscribe']);
 
+// version One (V1) APIS 
 
 Route::prefix('v1')->group(function () {
     require base_path('routes/api/v1/trip.php');
     require base_path('routes/api/v1/ride_request.php');
     require base_path('routes/api/v1/profile.php');
     require base_path('routes/api/v1/review.php');
-    require base_path('routes/api/v1/page.php');
-
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::get('notifications', [NotificationController::class, 'index']);
-        Route::get('notifications/unread-count', [NotificationController::class, 'unreadCount']);
-        Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead']);
-        Route::post('notifications/{id}/read', [NotificationController::class, 'markAsRead']);
-    });
 });
+
+
+Route::post('/subscribe', [SubscriberApiController::class, 'subscribe']);
