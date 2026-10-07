@@ -107,6 +107,11 @@ class User extends Authenticatable
         return $this->hasMany(Review::class, 'review_by');
     }
 
+    public function rideRequests()
+    {
+        return $this->hasMany(RideRequest::class);
+    }
+
 
     /*
     |--------------------------------------------------------------------------

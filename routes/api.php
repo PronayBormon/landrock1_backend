@@ -48,6 +48,7 @@ Route::post('/subscribe', [SubscriberApiController::class, 'subscribe']);
 
 Route::prefix('v1')->group(function () {
     require base_path('routes/api/v1/trip.php');
+    require base_path('routes/api/v1/ride_request.php');
     require base_path('routes/api/v1/profile.php');
     require base_path('routes/api/v1/review.php');
     require base_path('routes/api/v1/page.php');

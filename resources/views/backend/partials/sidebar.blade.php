@@ -128,6 +128,24 @@ $system = SystemSetting::first();
 
             </li>
 
+            {{-- RIDE REQUESTS --}}
+            <li class="side-nav-item {{ request()->routeIs('admin.ride-requests.*') ? 'active' : '' }}">
+
+                <a href="{{ route('admin.ride-requests.index') }}"
+                   class="side-nav-link">
+
+                    <span class="menu-icon">
+                        <i class="ti ti-map-pin"></i>
+                    </span>
+
+                    <span class="menu-text">
+                        Ride Requests
+                    </span>
+
+                </a>
+
+            </li>
+
             {{-- BOOKINGS --}}
             <li class="side-nav-item {{ request()->routeIs('admin.bookings.*') ? 'active' : '' }}">
 

@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use App\Models\Credential;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configureApiRateLimiting();
         try {
             $smtp = Credential::where('service', 'smtp')
                 ->where('is_active', 1)
@@ -46,5 +51,28 @@ class AppServiceProvider extends ServiceProvider
             // Prevent app crash if DB not ready
             logger()->error('SMTP load failed: ' . $e->getMessage());
         }
+    }
+
+
+    protected function configureApiRateLimiting(): void
+    {
+         RateLimiter::for('api', function (Request $request) {
+            $key = Str::lower((string) $request->input('email', 'guest')) . '|' . $request->ip();
+
+            return Limit::perMinute(10)->by($key);
+        });
+      
+      
+        RateLimiter::for('auth-api', function (Request $request) {
+            $key = Str::lower((string) $request->input('email', 'guest')) . '|' . $request->ip();
+
+            return Limit::perMinute(10)->by($key);
+        });
+
+        RateLimiter::for('profile-api', function (Request $request) {
+            return Limit::perMinute(60)->by(
+                optional($request->user())->id ?: $request->ip()
+            );
+        });
     }
 }

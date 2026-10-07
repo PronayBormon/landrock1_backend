@@ -11,6 +11,7 @@ use App\Http\Controllers\Web\Backend\BookingsController;
 use App\Http\Controllers\Web\Backend\ChatsController;
 use App\Http\Controllers\Web\Backend\ReportsController;
 use App\Http\Controllers\Web\Backend\ReviewsController;
+use App\Http\Controllers\Web\Backend\RideRequestController;
 use App\Http\Controllers\Web\Backend\TripsController;
 use App\Http\Controllers\Web\Backend\UploadController;
 use App\Http\Controllers\Web\Backend\users\usercontroller;
@@ -88,6 +89,15 @@ Route::group([
             Route::post('/{id}/status', 'updateStatus')->name('admin.trips.status');
             Route::put('/update/{id}', 'update')->name('admin.trips.update');
             Route::delete('/delete/{id}', 'delete')->name('admin.trips.delete');
+        });
+
+        Route::controller(RideRequestController::class)->prefix('ride-requests')->group(function () {
+            Route::get('/', 'index')->name('admin.ride-requests.index');
+            Route::get('/create', 'create')->name('admin.ride-requests.create');
+            Route::post('/store', 'store')->name('admin.ride-requests.store');
+            Route::get('/edit/{id}', 'edit')->name('admin.ride-requests.edit');
+            Route::put('/update/{id}', 'update')->name('admin.ride-requests.update');
+            Route::delete('/delete/{id}', 'destroy')->name('admin.ride-requests.delete');
         });
 
         Route::controller(BookingsController::class)->prefix('bookings')->group(function () {

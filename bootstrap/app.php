@@ -14,6 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->api(append: [
+            'throttle:api',
+        ]);
         $middleware->alias([
             'admin' => AdminMiddleware::class,
             'localize' => \Mcamara\LaravelLocalization\Middleware\LaravelLocalizationRoutes::class,
@@ -25,7 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withBroadcasting(
         __DIR__ . '/../routes/channels.php',
-        ['prefix' => 'api', 'middleware' => ['auth:sanctum']],
+        ['prefix' => 'api', 'middleware' => ['auth:sanctum', 'throttle:api']],
     )
     ->withExceptions(function (Exceptions $exceptions): void {
         //
